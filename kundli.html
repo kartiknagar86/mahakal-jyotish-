@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>कुंडली - Mahakal Jyotish</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+        }
+        .calendar-header {
+            text-align: center;
+            padding: 30px 0 10px 0;
+        }
+        .calendar-title {
+            font-size: 2.2rem;
+            color: #ff8c00;
+            font-weight: 700;
+        }
+        .calendar-date {
+            color: #fff;
+            font-size: 1.1rem;
+            margin: 10px 0 5px 0;
+        }
+        .calendar-info {
+            color: #ffeb3b;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .calendar-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+            margin: 25px 0 0 0;
+        }
+        .calendar-card {
+            background: #2a1a00;
+            color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(255,140,0,0.08);
+            padding: 22px 18px;
+            min-width: 140px;
+            max-width: 180px;
+            flex: 1 1 140px;
+            text-align: center;
+            transition: box-shadow 0.2s, transform 0.2s;
+            border: 1px solid rgba(255,140,0,0.15);
+        }
+        .calendar-card:hover {
+            box-shadow: 0 6px 24px rgba(255,140,0,0.18);
+            transform: translateY(-4px) scale(1.03);
+        }
+        .calendar-card .icon {
+            font-size: 1.7rem;
+            color: #ff8c00;
+            margin-bottom: 8px;
+        }
+        .calendar-card .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff8c00;
+        }
+        .calendar-card .desc {
+            font-size: 0.92rem;
+            color: #ffecb3;
+            margin-top: 4px;
+        }
+        .kundli-form-section {
+            margin: 40px auto 0 auto;
+            max-width: 420px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 15px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,140,0,0.15);
+        }
+        .kundli-form-section h2 {
+            color: #ff8c00;
+            text-align: center;
+            margin-bottom: 18px;
+            font-size: 1.4rem;
+        }
+        .form-group label {
+            color: #ff8c00;
+        }
+        @media (max-width: 600px) {
+            .calendar-row { gap: 10px; }
+            .calendar-card { min-width: 120px; max-width: 100%; padding: 16px 8px; }
+            .kundli-form-section { padding: 18px 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-header" style="position:relative;">
+        <div class="lang-switcher-wrapper" style="position:absolute;top:18px;right:18px;z-index:10;">
+            <select id="langSwitcher" style="padding:4px 10px;border-radius:6px;font-size:1rem;min-width:90px;">
+                <option value="hi">हिन्दी</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        <div style="text-align:center;">
+            <div class="calendar-title lang-hindi">हिन्दू कैलेंडर</div>
+            <div class="calendar-title lang-english" style="display:none;">Hindu Calendar</div>
+        </div>
+        <div class="calendar-date"><span id="realtime-datetime"></span></div>
+        <div class="calendar-info lang-hindi">हिन्दू समय <span id="hinduTime"></span></div>
+        <div class="calendar-info lang-english" style="display:none;">Hindu Time <span id="hinduTimeEn"></span></div>
+        <div class="calendar-info lang-hindi" style="color:#ff5252;">चौघड़िया: <span id="choghadiyaName"></span> <span id="choghadiyaTime"></span></div>
+        <div class="calendar-info lang-english" style="color:#ff5252;display:none;">Choghadiya: <span id="choghadiyaNameEn"></span> <span id="choghadiyaTimeEn"></span></div>
+    </div>
+    <div class="container">
+        <div class="calendar-row">
+            <div class="calendar-card" id="monthlyCard" style="cursor:pointer;">
+                <div class="icon"><i class="fa-regular fa-calendar"></i></div>
+                <div class="title lang-hindi">मासिक</div>
+                <div class="title lang-english" style="display:none;">Monthly</div>
+                <div class="desc lang-hindi">माह के पक्ष एवं तिथि</div>
+                <div class="desc lang-english" style="display:none;">Month's Paksha & Tithi</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-regular fa-calendar-check"></i></div>
+                <div class="title lang-hindi">पंचांग</div>
+                <div class="title lang-english" style="display:none;">Panchang</div>
+                <div class="desc lang-hindi">दैनिक पंचांग, सूर्योदय/अस्त</div>
+                <div class="desc lang-english" style="display:none;">Daily Panchang, Sunrise/Sunset</div>
+            </div>
+            <div class="calendar-card" id="festivalCard" style="cursor:pointer;">
+                <div class="icon"><i class="fa-solid fa-fire"></i></div>
+                <div class="title lang-hindi">त्यौहार</div>
+                <div class="title lang-english" style="display:none;">Festivals</div>
+                <div class="desc lang-hindi">त्यौहार एवं उत्सव के दिन</div>
+                <div class="desc lang-english" style="display:none;">Festival & Celebration Days</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-regular fa-calendar-plus"></i></div>
+                <div class="title lang-hindi">मेरी तिथि</div>
+                <div class="title lang-english" style="display:none;">My Tithi</div>
+                <div class="desc lang-hindi">अपनी तिथि सुरक्षित करें</div>
+                <div class="desc lang-english" style="display:none;">Save Your Tithi</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-solid fa-chess-board"></i></div>
+                <div class="title lang-hindi">कुंडली</div>
+                <div class="title lang-english" style="display:none;">Kundli</div>
+                <div class="desc lang-hindi">ग्रह स्थिति, लग्न</div>
+                <div class="desc lang-english" style="display:none;">Planetary Positions, Lagna</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-solid fa-people-arrows"></i></div>
+                <div class="title lang-hindi">कुंडली मिलान</div>
+                <div class="title lang-english" style="display:none;">Kundli Matching</div>
+                <div class="desc lang-hindi">गुण मिलान, अष्ट कूट</div>
+                <div class="desc lang-english" style="display:none;">Guna Milan, Ashtakoot</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-regular fa-clock"></i></div>
+                <div class="title lang-hindi">मुहूर्त</div>
+                <div class="title lang-english" style="display:none;">Muhurat</div>
+                <div class="desc lang-hindi">मुहूर्त, चौघड़िया एवं होरा</div>
+                <div class="desc lang-english" style="display:none;">Muhurat, Choghadiya & Hora</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-regular fa-clock"></i></div>
+                <div class="title lang-hindi">हिन्दू समय</div>
+                <div class="title lang-english" style="display:none;">Hindu Time</div>
+                <div class="desc lang-hindi">इचकाल, घटी विधि</div>
+                <div class="desc lang-english" style="display:none;">Ichkaal, Ghati Vidhi</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-solid fa-gear"></i></div>
+                <div class="title lang-hindi">सेटिंग्स</div>
+                <div class="title lang-english" style="display:none;">Settings</div>
+                <div class="desc lang-hindi">स्थान और पसंद बदलें</div>
+                <div class="desc lang-english" style="display:none;">Change Location & Preferences</div>
+            </div>
+            <div class="calendar-card">
+                <div class="icon"><i class="fa-regular fa-circle-question"></i></div>
+                <div class="title lang-hindi">जानकारी</div>
+                <div class="title lang-english" style="display:none;">Info</div>
+                <div class="desc lang-hindi">हिन्दू कैलेंडर के बारे में</div>
+                <div class="desc lang-english" style="display:none;">About Hindu Calendar</div>
+            </div>
+        </div>
+        <div class="kundli-form-section" id="kundliFormSection">
+            <h2 class="lang-hindi">कुंडली विवरण भरें</h2>
+            <h2 class="lang-english" style="display:none;">Enter Birth Details</h2>
+            <form id="kundliForm">
+                <div class="form-group">
+                    <label for="fullName" class="lang-hindi">पूरा नाम *</label>
+                    <label for="fullName" class="lang-english" style="display:none;">Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob" class="lang-hindi">जन्म तिथि *</label>
+                    <label for="dob" class="lang-english" style="display:none;">Date of Birth *</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="tob" class="lang-hindi">जन्म समय *</label>
+                    <label for="tob" class="lang-english" style="display:none;">Time of Birth *</label>
+                    <div style="display:flex;gap:8px;">
+                        <input type="number" id="tobHour" name="tobHour" min="1" max="12" required style="width:60px;">
+                        <span>:</span>
+                        <input type="number" id="tobMin" name="tobMin" min="0" max="59" required style="width:60px;">
+                        <select id="tobAmPm" name="tobAmPm" required>
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pob" class="lang-hindi">जन्म स्थान *</label>
+                    <label for="pob" class="lang-english" style="display:none;">Place of Birth *</label>
+                    <input type="text" id="pob" name="pob" placeholder="शहर, राज्य, देश" required>
+                </div>
+                <button type="submit" class="submit-btn lang-hindi">जन्म विवरण भेजें</button>
+                <button type="submit" class="submit-btn lang-english" style="display:none;">Submit Details</button>
+            </form>
+        </div>
+        <div id="kundliResults" style="display:none;">
+            <div class="kundli-result-section" style="margin-bottom:32px;cursor:pointer;" onclick="showSoonModal()">
+                <h3 class="lang-hindi" style="color:#ff8c00;">ग्रह स्थिति</h3>
+                <h3 class="lang-english" style="color:#ff8c00;display:none;">Planet Positions</h3>
+                <table style="width:100%;color:#fff;background:#3a2a00;border-radius:10px;font-size:1rem;max-width:400px;margin:0 auto 18px auto;">
+                    <tr><th class="lang-hindi">ग्रह</th><th class="lang-hindi">राशि</th><th class="lang-english" style="display:none;">Planet</th><th class="lang-english" style="display:none;">Sign</th></tr>
+                    <tr><td class="lang-hindi">सूर्य</td><td class="lang-hindi">सिंह</td><td class="lang-english" style="display:none;">Sun</td><td class="lang-english" style="display:none;">Leo</td></tr>
+                    <tr><td class="lang-hindi">चन्द्र</td><td class="lang-hindi">कर्क</td><td class="lang-english" style="display:none;">Moon</td><td class="lang-english" style="display:none;">Cancer</td></tr>
+                    <tr><td class="lang-hindi">मंगल</td><td class="lang-hindi">मेष</td><td class="lang-english" style="display:none;">Mars</td><td class="lang-english" style="display:none;">Aries</td></tr>
+                    <tr><td class="lang-hindi">बुध</td><td class="lang-hindi">मिथुन</td><td class="lang-english" style="display:none;">Mercury</td><td class="lang-english" style="display:none;">Gemini</td></tr>
+                    <tr><td class="lang-hindi">गुरु</td><td class="lang-hindi">धनु</td><td class="lang-english" style="display:none;">Jupiter</td><td class="lang-english" style="display:none;">Sagittarius</td></tr>
+                    <tr><td class="lang-hindi">शुक्र</td><td class="lang-hindi">वृषभ</td><td class="lang-english" style="display:none;">Venus</td><td class="lang-english" style="display:none;">Taurus</td></tr>
+                    <tr><td class="lang-hindi">शनि</td><td class="lang-hindi">मकर</td><td class="lang-english" style="display:none;">Saturn</td><td class="lang-english" style="display:none;">Capricorn</td></tr>
+                    <tr><td class="lang-hindi">राहु</td><td class="lang-hindi">कुंभ</td><td class="lang-english" style="display:none;">Rahu</td><td class="lang-english" style="display:none;">Aquarius</td></tr>
+                    <tr><td class="lang-hindi">केतु</td><td class="lang-hindi">सिंह</td><td class="lang-english" style="display:none;">Ketu</td><td class="lang-english" style="display:none;">Leo</td></tr>
+                </table>
+            </div>
+            <div class="kundli-result-section" style="margin-bottom:32px;cursor:pointer;" onclick="showSoonModal()">
+                <h3 class="lang-hindi" style="color:#ff8c00;">कुंडली विवरण</h3>
+                <h3 class="lang-english" style="color:#ff8c00;display:none;">Kundli Details</h3>
+                <table style="width:100%;color:#fff;background:#3a2a00;border-radius:10px;font-size:1rem;max-width:400px;margin:0 auto 18px auto;">
+                    <tr><th class="lang-hindi">लग्न</th><td class="lang-hindi">धनु</td><th class="lang-english" style="display:none;">Lagna</th><td class="lang-english" style="display:none;">Sagittarius</td></tr>
+                    <tr><th class="lang-hindi">राशि</th><td class="lang-hindi">वृश्चिक</td><th class="lang-english" style="display:none;">Rashi</th><td class="lang-english" style="display:none;">Scorpio</td></tr>
+                    <tr><th class="lang-hindi">नक्षत्र</th><td class="lang-hindi">विशाखा</td><th class="lang-english" style="display:none;">Nakshatra</th><td class="lang-english" style="display:none;">Vishakha</td></tr>
+                    <tr><th class="lang-hindi">तिथि</th><td class="lang-hindi">एकादशी</td><th class="lang-english" style="display:none;">Tithi</th><td class="lang-english" style="display:none;">Ekadashi</td></tr>
+                </table>
+            </div>
+            <div class="kundli-result-section" style="cursor:pointer;" onclick="showSoonModal()">
+                <h3 class="lang-hindi" style="color:#ff8c00;">दशा प्रणाली</h3>
+                <h3 class="lang-english" style="color:#ff8c00;display:none;">Dasha System</h3>
+                <table style="width:100%;color:#00ff00;background:#3a2a00;border-radius:10px;font-size:1rem;max-width:400px;margin:0 auto 18px auto;">
+                    <tr><th class="lang-hindi">महादशा</th><th class="lang-hindi">अंतर्दशा</th><th class="lang-hindi">अवधि</th><th class="lang-english" style="display:none;">Mahadasha</th><th class="lang-english" style="display:none;">Antardasha</th><th class="lang-english" style="display:none;">Duration</th></tr>
+                    <tr><td class="lang-hindi">बृहस्पति</td><td class="lang-hindi">शनि</td><td class="lang-hindi">2020 - 2036</td><td class="lang-english" style="display:none;">Jupiter</td><td class="lang-english" style="display:none;">Saturn</td><td class="lang-english" style="display:none;">2020 - 2036</td></tr>
+                    <tr><td class="lang-hindi">शनि</td><td class="lang-hindi">बुध</td><td class="lang-hindi">2036 - 2055</td><td class="lang-english" style="display:none;">Saturn</td><td class="lang-english" style="display:none;">Mercury</td><td class="lang-english" style="display:none;">2036 - 2055</td></tr>
+                    <tr><td class="lang-hindi">बुध</td><td class="lang-hindi">केतु</td><td class="lang-hindi">2055 - 2062</td><td class="lang-english" style="display:none;">Mercury</td><td class="lang-english" style="display:none;">Ketu</td><td class="lang-english" style="display:none;">2055 - 2062</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text lang-hindi">© 2025 Mahakal Jyotish – Jai Mahakal 🔱</p>
+            <p class="footer-text lang-english" style="display:none;">© 2025 Mahakal Jyotish – Jai Mahakal 🔱</p>
+        </div>
+    </footer>
+    <!-- Modal for Coming Soon -->
+    <div id="soonModal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+        <div style="background:#1a1a1a;padding:32px 22px 22px 22px;border-radius:16px;max-width:90vw;max-height:80vh;box-shadow:0 8px 32px rgba(255,140,0,0.18);position:relative;text-align:center;min-width:260px;">
+            <button onclick="closeSoonModal()" style="position:absolute;top:10px;right:16px;background:none;border:none;font-size:1.5rem;color:#ff8c00;cursor:pointer;">&times;</button>
+            <h2 class="lang-hindi" style="color:#ff8c00;">अभी जल्द ही</h2>
+            <h2 class="lang-english" style="color:#ff8c00;display:none;">Coming Soon</h2>
+        </div>
+    </div>
+    <!-- Modal for Monthly Panchang -->
+    <div id="monthlyModal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+        <div style="background:#1a1a1a;padding:32px 22px 22px 22px;border-radius:16px;max-width:95vw;max-height:90vh;box-shadow:0 8px 32px rgba(255,140,0,0.18);position:relative;text-align:center;min-width:260px;overflow:auto;">
+            <button onclick="closeMonthlyModal()" style="position:absolute;top:10px;right:16px;background:none;border:none;font-size:1.5rem;color:#ff8c00;cursor:pointer;">&times;</button>
+            <h2 class="lang-hindi" style="color:#ff8c00;">मासिक पंचांग</h2>
+            <h2 class="lang-english" style="color:#ff8c00;display:none;">Monthly Panchang</h2>
+            <div style="margin:18px 0 18px 0;">
+                <select id="monthSelect" style="padding:6px 14px;border-radius:8px;font-size:1rem;">
+                    <!-- Options will be filled by JS -->
+                </select>
+            </div>
+            <div id="monthlyContent"></div>
+        </div>
+    </div>
+    <!-- Modal for Festivals -->
+    <div id="festivalModal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+        <div style="background:#1a1a1a;padding:32px 22px 22px 22px;border-radius:16px;max-width:95vw;max-height:90vh;box-shadow:0 8px 32px rgba(255,140,0,0.18);position:relative;text-align:center;min-width:260px;overflow:auto;">
+            <button onclick="closeFestivalModal()" style="position:absolute;top:10px;right:16px;background:none;border:none;font-size:1.5rem;color:#ff8c00;cursor:pointer;">&times;</button>
+            <h2 class="lang-hindi" style="color:#ff8c00;">त्यौहार</h2>
+            <h2 class="lang-english" style="color:#ff8c00;display:none;">Festivals</h2>
+            <div style="margin:18px 0 18px 0;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;">
+                <select id="festivalMonthSelect" style="padding:6px 14px;border-radius:8px;font-size:1rem;">
+                    <!-- Options will be filled by JS -->
+                </select>
+                <select id="festivalYearSelect" style="padding:6px 14px;border-radius:8px;font-size:1rem;">
+                    <!-- Options will be filled by JS -->
+                </select>
+            </div>
+            <div id="festivalContent"></div>
+        </div>
+    </div>
+    <!-- Modal for My Tithi -->
+    <div id="myTithiModal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+        <div style="background:#1a1a1a;padding:32px 22px 22px 22px;border-radius:16px;max-width:95vw;max-height:90vh;box-shadow:0 8px 32px rgba(255,140,0,0.18);position:relative;text-align:center;min-width:260px;overflow:auto;">
+            <button onclick="closeMyTithiModal()" style="position:absolute;top:10px;right:16px;background:none;border:none;font-size:1.5rem;color:#ff8c00;cursor:pointer;">&times;</button>
+            <h2 style="color:#ff8c00;">मेरी तिथि</h2>
+            <div style="color:#fff;margin-bottom:18px;font-size:1.05rem;">कैलेंडर में अपनी महत्वपूर्ण तिथि जोड़ें! यह जन्मदिन, शादी की सालगिरह, समारोह या कोई अन्य घटना हो सकती है जिसे आप ट्रैक करना चाहते हैं।</div>
+            <form id="myTithiForm" autocomplete="off" style="margin-bottom:18px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                    <span style="color:#ff8c00;font-size:1.3rem;"><i class="fa fa-user"></i></span>
+                    <input type="text" id="tithiName" placeholder="अपना नाम या तिथि का नाम" style="flex:1;padding:8px 10px;border-radius:6px;border:none;background:#2a1a00;color:#fff;font-size:1rem;outline:none;border-bottom:2px solid #ff8c00;" required>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:10px;">
+                    <select id="tithiMonth" style="flex:1;padding:8px 10px;border-radius:6px;border:none;background:#2a1a00;color:#fff;font-size:1rem;outline:none;border-bottom:2px solid #ff8c00;">
+                        <option value="चैत्र">चैत्र</option>
+                        <option value="वैशाख">वैशाख</option>
+                        <option value="ज्येष्ठ">ज्येष्ठ</option>
+                        <option value="आषाढ़">आषाढ़</option>
+                        <option value="श्रावण">श्रावण</option>
+                        <option value="भाद्रपद">भाद्रपद</option>
+                        <option value="आश्विन">आश्विन</option>
+                        <option value="कार्तिक">कार्तिक</option>
+                        <option value="मार्गशीर्ष">मार्गशीर्ष</option>
+                        <option value="पौष">पौष</option>
+                        <option value="माघ">माघ</option>
+                        <option value="फाल्गुन">फाल्गुन</option>
+                    </select>
+                    <select id="tithiPaksha" style="flex:1;padding:8px 10px;border-radius:6px;border:none;background:#2a1a00;color:#fff;font-size:1rem;outline:none;border-bottom:2px solid #ff8c00;">
+                        <option value="शुक्ल">शुक्ल</option>
+                        <option value="कृष्ण">कृष्ण</option>
+                    </select>
+                    <select id="tithiDay" style="flex:1;padding:8px 10px;border-radius:6px;border:none;background:#2a1a00;color:#fff;font-size:1rem;outline:none;border-bottom:2px solid #ff8c00;">
+                        <option value="प्रथमा">प्रथमा</option>
+                        <option value="द्वितीया">द्वितीया</option>
+                        <option value="तृतीया">तृतीया</option>
+                        <option value="चतुर्थी">चतुर्थी</option>
+                        <option value="पंचमी">पंचमी</option>
+                        <option value="षष्ठी">षष्ठी</option>
+                        <option value="सप्तमी">सप्तमी</option>
+                        <option value="अष्टमी">अष्टमी</option>
+                        <option value="नवमी">नवमी</option>
+                        <option value="दशमी">दशमी</option>
+                        <option value="एकादशी">एकादशी</option>
+                        <option value="द्वादशी">द्वादशी</option>
+                        <option value="त्रयोदशी">त्रयोदशी</option>
+                        <option value="चतुर्दशी">चतुर्दशी</option>
+                        <option value="पूर्णिमा">पूर्णिमा</option>
+                        <option value="अमावस्या">अमावस्या</option>
+                    </select>
+                </div>
+                <button type="submit" style="background:#ff8c00;color:#fff;padding:10px 24px;border:none;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;margin-top:8px;">मेरी तिथि सुरक्षित करे</button>
+            </form>
+            <div style="color:#ffeb3b;font-size:1.1rem;font-weight:600;margin-bottom:8px;">आपकी सहेजी गयी तिथि</div>
+            <div style="color:#fff;font-size:0.98rem;margin-bottom:10px;">कैलेंडर में डालने के लिए टैप करे , हटाने के लिए लम्बे समय तक दबाये</div>
+            <ul id="savedTithis" style="list-style:none;padding:0;max-width:400px;margin:0 auto 0 auto;"></ul>
+        </div>
+    </div>
+    <script>
+    // Language switcher logic
+    function setLanguage(lang) {
+        document.querySelectorAll('.lang-hindi').forEach(el => el.style.display = (lang === 'hi' ? '' : 'none'));
+        document.querySelectorAll('.lang-english').forEach(el => el.style.display = (lang === 'en' ? '' : 'none'));
+        localStorage.setItem('lang', lang);
+    }
+    document.getElementById('langSwitcher').addEventListener('change', function() {
+        setLanguage(this.value);
+    });
+    (function(){
+        var lang = localStorage.getItem('lang') || 'hi';
+        document.getElementById('langSwitcher').value = lang;
+        setLanguage(lang);
+    })();
+
+    // Real-time date and time in Hindi/English
+    function getHindiMonth(monthIndex) {
+        const months = ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+        return months[monthIndex];
+    }
+    function getHindiDay(dayIndex) {
+        const days = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+        return days[dayIndex];
+    }
+    function getEnglishMonth(monthIndex) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return months[monthIndex];
+    }
+    function getEnglishDay(dayIndex) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[dayIndex];
+    }
+    function pad(num) {
+        return num < 10 ? '0' + num : num;
+    }
+    function toHindiDigits(str) {
+        const map = ['०','१','२','३','४','५','६','७','८','९'];
+        return str.replace(/\d/g, d => map[d]);
+    }
+    function updateDateTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes();
+        const day = now.getDate();
+        const month = getHindiMonth(now.getMonth());
+        const year = now.getFullYear();
+        const dayName = getHindiDay(now.getDay());
+        let ampmHindi = hours < 12 ? 'पूर्वाह्न' : 'अपराह्न';
+        let displayHours = hours % 12;
+        if (displayHours === 0) displayHours = 12;
+        let timeStr = pad(displayHours) + ':' + pad(minutes) + ' ' + ampmHindi;
+        timeStr = toHindiDigits(timeStr);
+        const dateStr = toHindiDigits(day.toString()) + ' ' + month + ' ' + toHindiDigits(year.toString());
+        // English
+        const monthEn = getEnglishMonth(now.getMonth());
+        const dayNameEn = getEnglishDay(now.getDay());
+        let ampmEn = hours < 12 ? 'AM' : 'PM';
+        let displayHoursEn = hours % 12;
+        if (displayHoursEn === 0) displayHoursEn = 12;
+        let timeStrEn = pad(displayHoursEn) + ':' + pad(minutes) + ' ' + ampmEn;
+        const dateStrEn = pad(day) + ' ' + monthEn + ' ' + year;
+        // Set
+        if((localStorage.getItem('lang') || 'hi') === 'en') {
+            document.getElementById('realtime-datetime').textContent = dayNameEn + ', ' + timeStrEn + ', ' + dateStrEn;
+        } else {
+            document.getElementById('realtime-datetime').textContent = dayName + ', ' + timeStr + ', ' + dateStr;
+        }
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Real-time Hindu Time (digital clock)
+    function updateHinduTime() {
+        const now = new Date();
+        let h = now.getHours();
+        let m = now.getMinutes();
+        let s = now.getSeconds();
+        function pad(n) { return n < 10 ? '0' + n : n; }
+        // Hindi digits
+        function toHindiDigits(str) {
+            const map = ['०','१','२','३','४','५','६','७','८','९'];
+            return str.replace(/\d/g, d => map[d]);
+        }
+        const timeStr = pad(h) + ':' + pad(m) + ':' + pad(s);
+        document.getElementById('hinduTime').textContent = toHindiDigits(timeStr);
+        document.getElementById('hinduTimeEn').textContent = timeStr;
+    }
+    updateHinduTime();
+    setInterval(updateHinduTime, 1000);
+
+    // Kundli Form Submission Logic
+    document.getElementById('kundliForm').onsubmit = function(e) {
+        e.preventDefault();
+        document.getElementById('kundliFormSection').style.display = 'none';
+        document.getElementById('kundliResults').style.display = '';
+    };
+
+    function showSoonModal() {
+        document.getElementById('soonModal').style.display = 'flex';
+    }
+    function closeSoonModal() {
+        document.getElementById('soonModal').style.display = 'none';
+    }
+
+    // Monthly Modal Logic
+    const hindiMonths = ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+    const englishMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    document.getElementById('monthlyCard').onclick = function() {
+        fillMonthSelect();
+        renderMonthlyContent();
+        document.getElementById('monthlyModal').style.display = 'flex';
+    };
+    function closeMonthlyModal() {
+        document.getElementById('monthlyModal').style.display = 'none';
+    }
+    function fillMonthSelect() {
+        const monthSelect = document.getElementById('monthSelect');
+        monthSelect.innerHTML = '';
+        const lang = localStorage.getItem('lang') || 'hi';
+        const months = lang === 'en' ? englishMonths : hindiMonths;
+        const now = new Date();
+        for(let i=0; i<12; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = months[i];
+            if(i === now.getMonth()) opt.selected = true;
+            monthSelect.appendChild(opt);
+        }
+    }
+    document.getElementById('monthSelect').onchange = renderMonthlyContent;
+    function renderMonthlyContent() {
+        const now = new Date();
+        const lang = localStorage.getItem('lang') || 'hi';
+        const months = lang === 'en' ? englishMonths : hindiMonths;
+        const days = lang === 'en'
+            ? ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+            : ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+        const festivalsByMonth = [
+            // Jan
+            [ { hi: 'मकर संक्रांति', en: 'Makar Sankranti', date: '15 जनवरी' } ],
+            // Feb
+            [ { hi: 'वसंत पंचमी', en: 'Vasant Panchami', date: '14 फरवरी' } ],
+            // Mar
+            [ { hi: 'होली', en: 'Holi', date: '25 मार्च' } ],
+            // Apr
+            [ { hi: 'राम नवमी', en: 'Ram Navami', date: '17 अप्रैल' } ],
+            // May
+            [ { hi: 'बुद्ध पूर्णिमा', en: 'Buddha Purnima', date: '23 मई' } ],
+            // Jun
+            [ { hi: 'गंगा दशहरा', en: 'Ganga Dussehra', date: '16 जून' } ],
+            // Jul
+            [ { hi: 'गुरु पूर्णिमा', en: 'Guru Purnima', date: '21 जुलाई' } ],
+            // Aug
+            [ { hi: 'रक्षा बंधन', en: 'Raksha Bandhan', date: '19 अगस्त' }, { hi: 'हरियाली अमावस्या', en: 'Hariyali Amavasya', date: '4 अगस्त' } ],
+            // Sep
+            [ { hi: 'गणेश चतुर्थी', en: 'Ganesh Chaturthi', date: '7 सितंबर' } ],
+            // Oct
+            [ { hi: 'शरद पूर्णिमा', en: 'Sharad Purnima', date: '17 अक्टूबर' } ],
+            // Nov
+            [ { hi: 'दीपावली', en: 'Diwali', date: '1 नवंबर' } ],
+            // Dec
+            [ { hi: 'दत्तात्रेय जयंती', en: 'Dattatreya Jayanti', date: '14 दिसंबर' } ]
+        ];
+        const monthSelect = document.getElementById('monthSelect');
+        const selectedMonth = parseInt(monthSelect.value);
+        const year = now.getFullYear();
+        // Dummy tithi/paksha
+        const tithi = lang === 'en' ? 'Ekadashi' : 'एकादशी';
+        const paksha = lang === 'en' ? 'Shukla' : 'शुक्ल';
+        const dayName = days[now.getDay()];
+        // Bilingual content
+        let html = '';
+        html += `<table style='width:100%;color:#fff;background:#3a2a00;border-radius:10px;font-size:1rem;max-width:400px;margin:0 auto 18px auto;'>
+            <tr><th class='lang-hindi'>माह</th><td class='lang-hindi'>${months[selectedMonth]} ${year}</td><th class='lang-english' style='display:none;'>Month</th><td class='lang-english' style='display:none;'>${months[selectedMonth]} ${year}</td></tr>
+            <tr><th class='lang-hindi'>तिथि</th><td class='lang-hindi'>${tithi}</td><th class='lang-english' style='display:none;'>Tithi</th><td class='lang-english' style='display:none;'>${tithi}</td></tr>
+            <tr><th class='lang-hindi'>पक्ष</th><td class='lang-hindi'>${paksha}</td><th class='lang-english' style='display:none;'>Paksha</th><td class='lang-english' style='display:none;'>${paksha}</td></tr>
+            <tr><th class='lang-hindi'>दिन</th><td class='lang-hindi'>${dayName}</td><th class='lang-english' style='display:none;'>Day</th><td class='lang-english' style='display:none;'>${dayName}</td></tr>
+        </table>`;
+        html += `<div style='margin:18px 0 8px 0;font-weight:600;color:#ffeb3b;' class='lang-hindi'>त्योहार</div>`;
+        html += `<div style='margin:18px 0 8px 0;font-weight:600;color:#ffeb3b;display:none;' class='lang-english'>Festivals</div>`;
+        html += `<ul style='list-style:none;padding:0;max-width:400px;margin:0 auto;'>`;
+        (festivalsByMonth[selectedMonth] || []).forEach(f => {
+            html += `<li class='lang-hindi' style='margin-bottom:8px;'>${f.date}: ${f.hi}</li>`;
+            html += `<li class='lang-english' style='margin-bottom:8px;display:none;'>${f.date}: ${f.en}</li>`;
+        });
+        html += `</ul>`;
+        document.getElementById('monthlyContent').innerHTML = html;
+    }
+
+    // Real-time Choghadiya logic
+    function updateChoghadiya() {
+        // Choghadiya names (day and night)
+        const choghadiyaNamesHi = ['उद्वेग', 'चर', 'लाभ', 'अमृत', 'काल', 'शुभ', 'रोग', 'काल'];
+        const choghadiyaNamesEn = ['Udveg', 'Char', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Kaal'];
+        // Sequence for day and night (starting from sunrise/sunset)
+        const daySeq = [1,2,3,4,5,6,7,0]; // Char, Labh, Amrit, Kaal, Shubh, Rog, Udveg, Kaal
+        const nightSeq = [6,5,4,3,2,1,0,7]; // Rog, Shubh, Kaal, Amrit, Labh, Char, Udveg, Kaal
+        // For demo, sunrise 6:00, sunset 18:00
+        const sunrise = 6;
+        const sunset = 18;
+        const now = new Date();
+        const hour = now.getHours();
+        const min = now.getMinutes();
+        const totalMins = hour * 60 + min;
+        let isDay = (totalMins >= sunrise*60 && totalMins < sunset*60);
+        let start = isDay ? sunrise*60 : sunset*60;
+        let choghadiyaLen = Math.floor((12*60)/8); // 90 min
+        let idx = Math.floor((totalMins - start) / choghadiyaLen);
+        if(idx < 0) idx = 0;
+        if(idx > 7) idx = 7;
+        let seq = isDay ? daySeq : nightSeq;
+        let choghadiyaHi = choghadiyaNamesHi[seq[idx]];
+        let choghadiyaEn = choghadiyaNamesEn[seq[idx]];
+        // Time range
+        let rangeStart = start + idx*choghadiyaLen;
+        let rangeEnd = rangeStart + choghadiyaLen;
+        function pad(n) { return n<10?'0'+n:n; }
+        function toTimeStr(m) { return pad(Math.floor(m/60))+':'+pad(m%60); }
+        // Hindi digits
+        function toHindiDigits(str) {
+            const map = ['०','१','२','३','४','५','६','७','८','९'];
+            return str.replace(/\d/g, d => map[d]);
+        }
+        document.getElementById('choghadiyaName').textContent = choghadiyaHi;
+        document.getElementById('choghadiyaTime').textContent = toHindiDigits(toTimeStr(rangeStart)) + ' - ' + toHindiDigits(toTimeStr(rangeEnd));
+        document.getElementById('choghadiyaNameEn').textContent = choghadiyaEn;
+        document.getElementById('choghadiyaTimeEn').textContent = toTimeStr(rangeStart) + ' - ' + toTimeStr(rangeEnd);
+    }
+    updateChoghadiya();
+    setInterval(updateChoghadiya, 60000);
+
+    // Festival Modal Logic
+    document.getElementById('festivalCard').onclick = function() {
+        fillFestivalSelects();
+        renderFestivalContent();
+        document.getElementById('festivalModal').style.display = 'flex';
+    };
+    function closeFestivalModal() {
+        document.getElementById('festivalModal').style.display = 'none';
+    }
+    function fillFestivalSelects() {
+        const monthSelect = document.getElementById('festivalMonthSelect');
+        const yearSelect = document.getElementById('festivalYearSelect');
+        const lang = localStorage.getItem('lang') || 'hi';
+        const months = lang === 'en' ? englishMonths : hindiMonths;
+        const now = new Date();
+        
+        // Fill month select
+        monthSelect.innerHTML = '';
+        for(let i=0; i<12; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = months[i];
+            if(i === now.getMonth()) opt.selected = true;
+            monthSelect.appendChild(opt);
+        }
+        
+        // Fill year select
+        yearSelect.innerHTML = '';
+        const currentYear = now.getFullYear();
+        for(let i=currentYear-2; i<=currentYear+2; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = lang === 'en' ? i.toString() : toHindiDigits(i.toString());
+            if(i === currentYear) opt.selected = true;
+            yearSelect.appendChild(opt);
+        }
+    }
+    document.getElementById('festivalMonthSelect').onchange = renderFestivalContent;
+    document.getElementById('festivalYearSelect').onchange = renderFestivalContent;
+    function renderFestivalContent() {
+        const lang = localStorage.getItem('lang') || 'hi';
+        const monthSelect = document.getElementById('festivalMonthSelect');
+        const yearSelect = document.getElementById('festivalYearSelect');
+        const selectedMonth = parseInt(monthSelect.value);
+        const selectedYear = parseInt(yearSelect.value);
+        
+        // Comprehensive festival data for each month
+        const festivalsData = [
+            // January
+            [
+                { hi: 'मकर संक्रांति', en: 'Makar Sankranti', date: '15 जनवरी', type: 'major' },
+                { hi: 'लोहड़ी', en: 'Lohri', date: '13 जनवरी', type: 'major' },
+                { hi: 'पोंगल', en: 'Pongal', date: '15 जनवरी', type: 'major' },
+                { hi: 'वसंत पंचमी', en: 'Vasant Panchami', date: '14 जनवरी', type: 'major' },
+                { hi: 'गुरु गोबिंद सिंह जयंती', en: 'Guru Gobind Singh Jayanti', date: '20 जनवरी', type: 'minor' }
+            ],
+            // February
+            [
+                { hi: 'वसंत पंचमी', en: 'Vasant Panchami', date: '14 फरवरी', type: 'major' },
+                { hi: 'महाशिवरात्रि', en: 'Maha Shivratri', date: '18 फरवरी', type: 'major' },
+                { hi: 'हजरत अली जयंती', en: 'Hazrat Ali Jayanti', date: '25 फरवरी', type: 'minor' }
+            ],
+            // March
+            [
+                { hi: 'होली', en: 'Holi', date: '25 मार्च', type: 'major' },
+                { hi: 'रंग पंचमी', en: 'Rang Panchami', date: '30 मार्च', type: 'minor' },
+                { hi: 'चैत्र नवरात्रि', en: 'Chaitra Navratri', date: '22 मार्च', type: 'major' }
+            ],
+            // April
+            [
+                { hi: 'राम नवमी', en: 'Ram Navami', date: '17 अप्रैल', type: 'major' },
+                { hi: 'हनुमान जयंती', en: 'Hanuman Jayanti', date: '23 अप्रैल', type: 'major' },
+                { hi: 'महावीर जयंती', en: 'Mahavir Jayanti', date: '21 अप्रैल', type: 'major' },
+                { hi: 'गुड फ्राइडे', en: 'Good Friday', date: '18 अप्रैल', type: 'minor' },
+                { hi: 'ईस्टर', en: 'Easter', date: '20 अप्रैल', type: 'minor' }
+            ],
+            // May
+            [
+                { hi: 'बुद्ध पूर्णिमा', en: 'Buddha Purnima', date: '23 मई', type: 'major' },
+                { hi: 'अक्षय तृतीया', en: 'Akshaya Tritiya', date: '10 मई', type: 'major' },
+                { hi: 'परशुराम जयंती', en: 'Parshuram Jayanti', date: '10 मई', type: 'minor' }
+            ],
+            // June
+            [
+                { hi: 'गंगा दशहरा', en: 'Ganga Dussehra', date: '16 जून', type: 'major' },
+                { hi: 'निर्जला एकादशी', en: 'Nirjala Ekadashi', date: '18 जून', type: 'minor' },
+                { hi: 'योगिनी एकादशी', en: 'Yogini Ekadashi', date: '3 जून', type: 'minor' }
+            ],
+            // July
+            [
+                { hi: 'गुरु पूर्णिमा', en: 'Guru Purnima', date: '21 जुलाई', type: 'major' },
+                { hi: 'रथ यात्रा', en: 'Rath Yatra', date: '7 जुलाई', type: 'major' },
+                { hi: 'देवशयनी एकादशी', en: 'Devshayani Ekadashi', date: '17 जुलाई', type: 'minor' }
+            ],
+            // August
+            [
+                { hi: 'रक्षा बंधन', en: 'Raksha Bandhan', date: '19 अगस्त', type: 'major' },
+                { hi: 'हरियाली अमावस्या', en: 'Hariyali Amavasya', date: '4 अगस्त', type: 'major' },
+                { hi: 'कृष्ण जन्माष्टमी', en: 'Krishna Janmashtami', date: '26 अगस्त', type: 'major' },
+                { hi: 'हरितालिका तीज', en: 'Hartalika Teej', date: '17 अगस्त', type: 'minor' }
+            ],
+            // September
+            [
+                { hi: 'गणेश चतुर्थी', en: 'Ganesh Chaturthi', date: '7 सितंबर', type: 'major' },
+                { hi: 'ओणम', en: 'Onam', date: '15 सितंबर', type: 'major' },
+                { hi: 'विश्वकर्मा पूजा', en: 'Vishwakarma Puja', date: '17 सितंबर', type: 'minor' },
+                { hi: 'पितृ पक्ष', en: 'Pitru Paksha', date: '29 सितंबर', type: 'major' }
+            ],
+            // October
+            [
+                { hi: 'शरद पूर्णिमा', en: 'Sharad Purnima', date: '17 अक्टूबर', type: 'major' },
+                { hi: 'दुर्गा पूजा', en: 'Durga Puja', date: '10 अक्टूबर', type: 'major' },
+                { hi: 'विजयदशमी', en: 'Vijayadashami', date: '15 अक्टूबर', type: 'major' },
+                { hi: 'करवा चौथ', en: 'Karwa Chauth', date: '20 अक्टूबर', type: 'major' },
+                { hi: 'अहोई अष्टमी', en: 'Ahoi Ashtami', date: '22 अक्टूबर', type: 'minor' }
+            ],
+            // November
+            [
+                { hi: 'दीपावली', en: 'Diwali', date: '1 नवंबर', type: 'major' },
+                { hi: 'गोवर्धन पूजा', en: 'Govardhan Puja', date: '2 नवंबर', type: 'major' },
+                { hi: 'भाई दूज', en: 'Bhai Dooj', date: '3 नवंबर', type: 'major' },
+                { hi: 'छठ पूजा', en: 'Chhath Puja', date: '7 नवंबर', type: 'major' },
+                { hi: 'गुरु नानक जयंती', en: 'Guru Nanak Jayanti', date: '15 नवंबर', type: 'major' }
+            ],
+            // December
+            [
+                { hi: 'दत्तात्रेय जयंती', en: 'Dattatreya Jayanti', date: '14 दिसंबर', type: 'major' },
+                { hi: 'गीता जयंती', en: 'Gita Jayanti', date: '22 दिसंबर', type: 'major' },
+                { hi: 'क्रिसमस', en: 'Christmas', date: '25 दिसंबर', type: 'major' },
+                { hi: 'नया साल', en: 'New Year', date: '31 दिसंबर', type: 'major' }
+            ]
+        ];
+        
+        const festivals = festivalsData[selectedMonth] || [];
+        const months = lang === 'en' ? englishMonths : hindiMonths;
+        
+        let html = '';
+        html += `<div style='margin:18px 0 8px 0;font-weight:600;color:#ffeb3b;' class='lang-hindi'>${months[selectedMonth]} ${lang === 'en' ? selectedYear : toHindiDigits(selectedYear.toString())} के त्यौहार</div>`;
+        html += `<div style='margin:18px 0 8px 0;font-weight:600;color:#ffeb3b;display:none;' class='lang-english'>Festivals of ${months[selectedMonth]} ${selectedYear}</div>`;
+        
+        if(festivals.length === 0) {
+            html += `<div style='color:#fff;margin:20px 0;' class='lang-hindi'>इस महीने कोई प्रमुख त्यौहार नहीं है</div>`;
+            html += `<div style='color:#fff;margin:20px 0;display:none;' class='lang-english'>No major festivals this month</div>`;
+        } else {
+            html += `<div style='max-width:500px;margin:0 auto;'>`;
+            festivals.forEach(festival => {
+                const color = festival.type === 'major' ? '#ff8c00' : '#ffeb3b';
+                const bgColor = festival.type === 'major' ? '#3a2a00' : '#2a2a00';
+                html += `<div style='background:${bgColor};color:#fff;padding:12px 16px;margin:8px 0;border-radius:8px;border-left:4px solid ${color};display:flex;justify-content:space-between;align-items:center;'>`;
+                html += `<div class='lang-hindi' style='font-weight:500;'>${festival.hi}</div>`;
+                html += `<div class='lang-english' style='font-weight:500;display:none;'>${festival.en}</div>`;
+                html += `<div style='color:${color};font-size:0.9rem;font-weight:600;'>${festival.date}</div>`;
+                html += `</div>`;
+            });
+            html += `</div>`;
+        }
+        
+        document.getElementById('festivalContent').innerHTML = html;
+    }
+
+    // My Tithi Modal Logic
+    document.querySelectorAll('.calendar-card').forEach(card => {
+        if (card.querySelector('.title') && card.querySelector('.title').textContent.trim() === 'मेरी तिथि') {
+            card.style.cursor = 'pointer';
+            card.onclick = function() {
+                document.getElementById('myTithiModal').style.display = 'flex';
+                renderSavedTithis();
+            };
+        }
+    });
+    function closeMyTithiModal() {
+        document.getElementById('myTithiModal').style.display = 'none';
+    }
+    // Save tithis in localStorage
+    function getSavedTithis() {
+        return JSON.parse(localStorage.getItem('savedTithis') || '[]');
+    }
+    function setSavedTithis(arr) {
+        localStorage.setItem('savedTithis', JSON.stringify(arr));
+    }
+    function renderSavedTithis() {
+        const list = document.getElementById('savedTithis');
+        const tithis = getSavedTithis();
+        list.innerHTML = '';
+        if (tithis.length === 0) {
+            list.innerHTML = '<li style="color:#bbb;">कोई तिथि सहेजी नहीं गई है</li>';
+            return;
+        }
+        tithis.forEach((tithi, idx) => {
+            const li = document.createElement('li');
+            li.style.background = '#2a1a00';
+            li.style.color = '#fff';
+            li.style.padding = '10px 12px';
+            li.style.margin = '6px 0';
+            li.style.borderRadius = '8px';
+            li.style.borderLeft = '4px solid #ff8c00';
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            li.style.cursor = 'pointer';
+            li.innerHTML = `<span><b>${tithi.name}</b> - ${tithi.month} ${tithi.paksha} ${tithi.day}</span>`;
+            li.onclick = function() {
+                alert('कैलेंडर में डालने का कार्य जल्द ही उपलब्ध होगा!');
+            };
+            li.oncontextmenu = function(e) {
+                e.preventDefault();
+                if(confirm('क्या आप इस तिथि को हटाना चाहते हैं?')) {
+                    tithis.splice(idx, 1);
+                    setSavedTithis(tithis);
+                    renderSavedTithis();
+                }
+            };
+            list.appendChild(li);
+        });
+    }
+    document.getElementById('myTithiForm').onsubmit = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('tithiName').value.trim();
+        const month = document.getElementById('tithiMonth').value;
+        const paksha = document.getElementById('tithiPaksha').value;
+        const day = document.getElementById('tithiDay').value;
+        if(!name) return;
+        const tithis = getSavedTithis();
+        tithis.push({ name, month, paksha, day });
+        setSavedTithis(tithis);
+        renderSavedTithis();
+        document.getElementById('myTithiForm').reset();
+    };
+    </script>
+</body>
+</html> 

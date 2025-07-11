@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>महाकाल ज्योतिष - Mahakal Jyotish</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header" style="position:relative;">
+        <div class="container">
+            <div class="lang-switcher-wrapper" style="position:absolute;top:24px;right:24px;z-index:10;">
+                <select id="langSwitcher" style="padding:4px 10px;border-radius:6px;font-size:1rem;min-width:90px;">
+                    <option value="hi">हिन्दी</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <div class="header-content" style="text-align:center;">
+                <div class="trishul-icon">🔱</div>
+                <h1 class="main-title lang-hindi">महाकाल ज्योतिष</h1>
+                <h1 class="main-title lang-english" style="display:none;">Mahakal Jyotish</h1>
+                <h2 class="subtitle lang-hindi">महाकाल ज्योतिष</h2>
+                <h2 class="subtitle lang-english" style="display:none;">Mahakal Jyotish</h2>
+                <p class="tagline lang-hindi">भविष्य वही, जो महादेव चाहें...</p>
+                <p class="tagline lang-english" style="display:none;">Bhavishya wahi, jo Mahadev chahen...</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Kundli Form Button Section -->
+    <section class="kundli-form-section">
+        <div class="container">
+            <a href="kundli.html" class="kundli-form-btn lang-hindi">
+                <i class="fas fa-file-alt"></i>
+                कुंडली फॉर्म भरें
+            </a>
+            <a href="kundli.html" class="kundli-form-btn lang-english" style="display:none;">
+                <i class="fas fa-file-alt"></i>
+                Fill Kundli Form
+            </a>
+        </div>
+    </section>
+
+    <!-- Add a nav or button for Puja Booking if not present -->
+    <nav class="main-nav" style="text-align:center;margin-top:18px;">
+        <button id="pujaBookingNavBtn" style="background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:10px 28px;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,0.13);cursor:pointer;">
+            <span style="font-size:1.2em;">📿</span> Puja Booking
+        </button>
+    </nav>
+
+    <!-- Puja List Section (hidden by default) -->
+    <section id="puja-list" style="display:none;max-width:900px;margin:32px auto 0 auto;padding:0 10px;"></section>
+
+    <!-- Puja Booking Modal -->
+    <div id="pujaBookingModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(34,0,51,0.75);align-items:center;justify-content:center;">
+      <div style="background:#fff;border-radius:14px;max-width:370px;width:90vw;padding:28px 18px 18px 18px;box-shadow:0 8px 32px rgba(0,0,0,0.25);position:relative;">
+        <button id="closePujaModal" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.5rem;color:#ff8c00;cursor:pointer;">&times;</button>
+        <h2 style="color:#ff8c00;text-align:center;margin-bottom:10px;font-size:1.3rem;">पूजा बुकिंग फॉर्म</h2>
+        <form id="pujaBookingForm">
+          <div style="margin-bottom:12px;">
+            <label for="userName" style="color:#2d0036;font-weight:600;">नाम</label>
+            <input type="text" id="userName" name="userName" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="userMobile" style="color:#2d0036;font-weight:600;">मोबाइल नंबर</label>
+            <input type="tel" id="userMobile" name="userMobile" required pattern="[0-9]{10}" maxlength="10" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+          </div>
+          <div style="margin-bottom:16px;">
+            <label for="userAddress" style="color:#2d0036;font-weight:600;">पता</label>
+            <textarea id="userAddress" name="userAddress" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;resize:vertical;min-height:48px;"></textarea>
+          </div>
+          <input type="hidden" id="pujaNameHidden" name="pujaNameHidden">
+          <button type="submit" style="width:100%;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:12px 0;font-size:1.1rem;cursor:pointer;">बुकिंग सबमिट करें</button>
+        </form>
+        <div id="pujaBookingSuccess" style="display:none;color:green;text-align:center;margin-top:12px;font-weight:600;"></div>
+      </div>
+    </div>
+
+    <!-- Pandit Section -->
+    <section class="pandit-section">
+        <div class="container">
+            <h2 class="section-title lang-hindi">हमारे विशेषज्ञ</h2>
+            <h2 class="section-title lang-english" style="display:none;">Our Experts</h2>
+            <div class="pandit-grid">
+                <!-- Expert cards removed. Only dynamic cards (from localStorage) will appear here. -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text lang-hindi">© 2025 महाकाल ज्योतिष – जय महाकाल 🔱</p>
+            <p class="footer-text lang-english" style="display:none;">© 2025 Mahakal Jyotish – Jai Mahakal 🔱</p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script>
+    // Language switcher logic
+    function setLanguage(lang) {
+        document.querySelectorAll('.lang-hindi').forEach(el => el.style.display = (lang === 'hi' ? '' : 'none'));
+        document.querySelectorAll('.lang-english').forEach(el => el.style.display = (lang === 'en' ? '' : 'none'));
+        localStorage.setItem('lang', lang);
+    }
+    document.getElementById('langSwitcher').addEventListener('change', function() {
+        setLanguage(this.value);
+    });
+    // On page load, set language from localStorage or default to Hindi
+    (function(){
+        var lang = localStorage.getItem('lang') || 'hi';
+        document.getElementById('langSwitcher').value = lang;
+        setLanguage(lang);
+    })();
+
+    // Professional Puja List Display Logic
+    function getPujaList() {
+        try {
+            var data = localStorage.getItem('mahakal_puja_list');
+            if (!data) return [];
+            var parsed = JSON.parse(data);
+            if (!Array.isArray(parsed)) return [];
+            return parsed;
+        } catch (e) {
+            return [];
+        }
+    }
+    
+    function setDefaultPujasIfNone() {
+        if (!localStorage.getItem('mahakal_puja_list')) {
+            var defaultPujas = [
+                { 
+                    name: 'रुद्राभिषेक (Rudrabhishek)', 
+                    desc: 'भगवान शिव की कृपा प्राप्ति के लिए विशेष पूजा। मंगल कार्यों में सफलता और शांति प्रदान करता है।', 
+                    price: 2100,
+                    duration: '2-3 घंटे',
+                    benefits: 'करियर सफलता, मानसिक शांति, शिव कृपा'
+                },
+                { 
+                    name: 'महामृत्युंजय जाप (Mahamrityunjaya)', 
+                    desc: 'दीर्घायु और आरोग्य के लिए महामृत्युंजय मंत्र का विशेष जाप। रोगों से मुक्ति और स्वास्थ्य लाभ।', 
+                    price: 3100,
+                    duration: '3-4 घंटे',
+                    benefits: 'दीर्घायु, स्वास्थ्य लाभ, रोग निवारण'
+                },
+                { 
+                    name: 'नवग्रह शांति (Navgraha Shanti)', 
+                    desc: 'सभी नौ ग्रहों की शांति के लिए विशेष पूजा। ग्रह दोष निवारण और जीवन में सुख-शांति।', 
+                    price: 1800,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'ग्रह दोष निवारण, जीवन सुख, शांति'
+                },
+                { 
+                    name: 'विवाह मंगल (Vivah Mangal)', 
+                    desc: 'विवाह के लिए विशेष मंगल पूजा। वैवाहिक जीवन में सुख-शांति और सफलता प्रदान करता है।', 
+                    price: 2500,
+                    duration: '2.5-3 घंटे',
+                    benefits: 'वैवाहिक सुख, परिवार शांति, मंगल कार्य'
+                },
+                { 
+                    name: 'गणेश पूजा (Ganesh Puja)', 
+                    desc: 'सभी कार्यों में सफलता के लिए गणेश जी की विशेष पूजा। विघ्न निवारण और सफलता प्राप्ति।', 
+                    price: 1200,
+                    duration: '1.5-2 घंटे',
+                    benefits: 'विघ्न निवारण, सफलता, नई शुरुआत'
+                }
+            ];
+            localStorage.setItem('mahakal_puja_list', JSON.stringify(defaultPujas));
+        }
+    }
+    
+    function renderPujaList() {
+        var list = getPujaList();
+        var container = document.getElementById('puja-list');
+        if (!container) return;
+        if (list.length === 0) {
+            container.innerHTML = '<div style="color:#ccc;text-align:center;padding:40px;font-size:1.1rem;">कोई पूजा उपलब्ध नहीं है।</div>';
+            return;
+        }
+        var html = `
+            <div style="background:rgba(255,255,255,0.05);border-radius:15px;padding:25px;margin-bottom:20px;">
+                <h2 style="color:#ff8c00;text-align:center;margin-bottom:20px;font-size:1.8rem;">
+                    <span style="font-size:1.5em;">🕉️</span> पूजा बुकिंग सेवाएं
+                </h2>
+                <p style="text-align:center;color:#fff;margin-bottom:25px;font-size:1.1rem;">
+                    हमारे विशेषज्ञ पंडितों द्वारा वैदिक विधि से पूजा संपन्न
+                </p>
+            </div>
+            <div class="puja-list-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;">
+        `;
+        list.forEach(function(puja, index) {
+            html += `
+                <div class="puja-card" style="background:rgba(255,255,255,0.08);border-radius:12px;padding:20px;border:1px solid rgba(255,140,0,0.3);transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 8px 25px rgba(255,140,0,0.2)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+                    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:15px;">
+                        <h3 style="color:#ff8c00;font-size:1.3rem;margin:0;font-weight:600;">${puja.name}</h3>
+                        <span style="background:linear-gradient(90deg,#ff8c00,#fff200);color:#2d0036;padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.9rem;">₹${puja.price}</span>
+                    </div>
+                    <p style="color:#fff;margin-bottom:15px;line-height:1.6;font-size:0.95rem;">${puja.desc}</p>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:15px;font-size:0.9rem;">
+                        <span style="color:#ff8c00;"><i class="fas fa-clock"></i> ${puja.duration}</span>
+                        <span style="color:#fff200;"><i class="fas fa-star"></i> लाभ: ${puja.benefits}</span>
+                    </div>
+                    <button onclick="bookPuja(${index})" style="width:100%;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;border:none;border-radius:8px;padding:12px;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fas fa-calendar-check"></i> पूजा बुक करें
+                    </button>
+                </div>
+            `;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    }
+    
+    let selectedPuja = null;
+    function bookPuja(pujaIndex) {
+        var list = getPujaList();
+        if (pujaIndex >= 0 && pujaIndex < list.length) {
+            selectedPuja = list[pujaIndex];
+            document.getElementById('pujaNameHidden').value = selectedPuja.name;
+            document.getElementById('pujaBookingForm').reset();
+            document.getElementById('pujaBookingSuccess').style.display = 'none';
+            document.getElementById('pujaBookingModal').style.display = 'flex';
+        }
+    }
+    document.getElementById('closePujaModal').onclick = function() {
+        document.getElementById('pujaBookingModal').style.display = 'none';
+    };
+    document.getElementById('pujaBookingModal').onclick = function(e) {
+        if(e.target === this) this.style.display = 'none';
+    };
+    document.getElementById('pujaBookingForm').onsubmit = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('userName').value.trim();
+        const mobile = document.getElementById('userMobile').value.trim();
+        const address = document.getElementById('userAddress').value.trim();
+        const pujaName = document.getElementById('pujaNameHidden').value;
+        if(!name || !mobile || !address) return;
+        // Save to localStorage
+        var bookings = JSON.parse(localStorage.getItem('mahakal_bookings') || '[]');
+        const bookingData = {
+            pujaName: pujaName,
+            pujaPrice: selectedPuja ? selectedPuja.price : '',
+            userName: name,
+            userMobile: mobile,
+            userAddress: address,
+            bookingDate: new Date().toISOString().split('T')[0],
+            status: 'Pending'
+        };
+        bookings.push(bookingData);
+        localStorage.setItem('mahakal_bookings', JSON.stringify(bookings));
+        // WhatsApp send
+        const msg = `नमस्ते,\nमुझे ${pujaName} बुक करनी है।\nनाम: ${name}\nमोबाइल: ${mobile}\nपता: ${address}`;
+        const waUrl = `https://wa.me/919691252214?text=${encodeURIComponent(msg)}`;
+        window.open(waUrl, '_blank');
+        // Show success
+        document.getElementById('pujaBookingSuccess').textContent = 'बुकिंग सफलतापूर्वक सबमिट हो गई! हम जल्द ही आपसे संपर्क करेंगे।';
+        document.getElementById('pujaBookingSuccess').style.display = 'block';
+        setTimeout(()=>{
+            document.getElementById('pujaBookingModal').style.display = 'none';
+        }, 1800);
+    };
+    document.addEventListener('DOMContentLoaded', function() {
+        setDefaultPujasIfNone();
+        var navBtn = document.getElementById('pujaBookingNavBtn');
+        var pujaSection = document.getElementById('puja-list');
+        if(navBtn && pujaSection) {
+            navBtn.addEventListener('click', function() {
+                if(pujaSection.style.display === 'none' || pujaSection.style.display === '') {
+                    renderPujaList();
+                    pujaSection.style.display = 'block';
+                    pujaSection.scrollIntoView({behavior:'smooth', block:'start'});
+                } else {
+                    pujaSection.style.display = 'none';
+                }
+            });
+        }
+    });
+    </script>
+    <script>
+(function(){
+    // Show uploaded pandit photo and details from localStorage if available
+    var panditData = localStorage.getItem('mahakal_pandit_photo');
+    if(panditData) {
+        try { panditData = JSON.parse(panditData); } catch { panditData = null; }
+    }
+    if(panditData && panditData.photo) {
+        var grid = document.querySelector('.pandit-grid');
+        if(grid) {
+            var card = document.createElement('div');
+            card.className = 'pandit-card';
+            let html = `<div class=\"pandit-photo\"><img src=\"${panditData.photo}\" alt=\"Pandit Photo\" style=\"max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;\"></div>`;
+            if(panditData.name) html += `<h3>${panditData.name}</h3>`;
+            if(panditData.exp) html += `<p class=\"experience\">${panditData.exp}</p>`;
+            if(panditData.spec) html += `<p class=\"specialization\">${panditData.spec}</p>`;
+            card.innerHTML = html;
+            grid.appendChild(card);
+        }
+    }
+})();
+</script>
+</body>
+</html> 
