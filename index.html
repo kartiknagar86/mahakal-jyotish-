@@ -12,20 +12,11 @@
     <!-- Header Section -->
     <header class="header" style="position:relative;">
         <div class="container">
-            <div class="lang-switcher-wrapper" style="position:absolute;top:24px;right:24px;z-index:10;">
-                <select id="langSwitcher" style="padding:4px 10px;border-radius:6px;font-size:1rem;min-width:90px;">
-                    <option value="hi">हिन्दी</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
             <div class="header-content" style="text-align:center;">
                 <div class="trishul-icon">🔱</div>
-                <h1 class="main-title lang-hindi">महाकाल ज्योतिष</h1>
-                <h1 class="main-title lang-english" style="display:none;">Mahakal Jyotish</h1>
-                <h2 class="subtitle lang-hindi">महाकाल ज्योतिष</h2>
-                <h2 class="subtitle lang-english" style="display:none;">Mahakal Jyotish</h2>
-                <p class="tagline lang-hindi">भविष्य वही, जो महादेव चाहें...</p>
-                <p class="tagline lang-english" style="display:none;">Bhavishya wahi, jo Mahadev chahen...</p>
+                <h1 class="main-title">महाकाल ज्योतिष</h1>
+                <h2 class="subtitle">महाकाल ज्योतिष शोथ संस्था एवं वैदिक पूजा स्थान</h2>
+                <p class="tagline">उज्जैन की महाकाल की पावन धरा ओर शिप्रा तट पर वैदिक पद्धति से सर्व कर्म पूजा पाठ संपन्न किए जाते है</p>
             </div>
         </div>
     </header>
@@ -47,7 +38,7 @@
     <!-- Add a nav or button for Puja Booking if not present -->
     <nav class="main-nav" style="text-align:center;margin-top:18px;">
         <button id="pujaBookingNavBtn" style="background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:10px 28px;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,0.13);cursor:pointer;">
-            <span style="font-size:1.2em;">📿</span> Puja Booking
+            <span style="font-size:1.2em;">📿</span> पूजा बुकिंग
         </button>
     </nav>
 
@@ -79,6 +70,36 @@
       </div>
     </div>
 
+    <!-- Payment Modal -->
+    <div id="paymentModal" style="display:none;position:fixed;z-index:10000;left:0;top:0;width:100vw;height:100vh;background:rgba(34,0,51,0.85);align-items:center;justify-content:center;">
+      <div style="background:#fff;border-radius:16px;max-width:400px;width:90vw;padding:32px 24px 24px 24px;box-shadow:0 12px 40px rgba(0,0,0,0.3);position:relative;">
+        <button id="closePaymentModal" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.8rem;color:#ff8c00;cursor:pointer;">&times;</button>
+        <h2 style="color:#ff8c00;text-align:center;margin-bottom:8px;font-size:1.4rem;">💳 भुगतान करें</h2>
+        <p style="color:#2d0036;text-align:center;margin-bottom:20px;font-size:1rem;">अपनी पसंदीदा भुगतान विधि चुनें</p>
+        
+        <div style="margin-bottom:24px;text-align:center;">
+          <div style="background:linear-gradient(135deg,#ff8c00,#fff200);color:#2d0036;padding:12px;border-radius:12px;margin-bottom:16px;">
+            <div style="font-size:1.2rem;font-weight:700;margin-bottom:4px;">₹<span id="paymentAmount">0</span></div>
+            <div style="font-size:0.9rem;opacity:0.8;" id="paymentPujaName">पूजा का नाम</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+          <!-- QR Code Payment -->
+          <div style="margin-bottom:16px;text-align:center;">
+            <img src="phonepe-qr.jpg" alt="PhonePe QR" style="width:200px;height:200px;border-radius:12px;border:2px solid #ff8c00;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.10);margin-bottom:10px;">
+            <div style="font-size:1.1rem;color:#2d0036;font-weight:600;margin-bottom:6px;">Scan & Pay Using PhonePe, Google Pay, Paytm etc.</div>
+            <div style="font-size:0.95rem;color:#666;">QR को स्कैन करें और भुगतान करें</div>
+          </div>
+
+          <!-- WhatsApp Screenshot Button -->
+          <button onclick="openWhatsApp()" style="background:#25d366;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:1.1rem;font-weight:600;cursor:pointer;margin-top:10px;">
+            📱 भुगतान स्क्रीनशॉट भेजें (WhatsApp)
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Pandit Section -->
     <section class="pandit-section">
         <div class="container">
@@ -91,31 +112,68 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" style="background:linear-gradient(135deg,#2d0036 0%,#1a0022 100%);padding:25px 0 15px 0;margin-top:30px;">
         <div class="container">
-            <p class="footer-text lang-hindi">© 2025 महाकाल ज्योतिष – जय महाकाल 🔱</p>
-            <p class="footer-text lang-english" style="display:none;">© 2025 Mahakal Jyotish – Jai Mahakal 🔱</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:20px;">
+                
+                <!-- Company Info -->
+                <div style="text-align:center;">
+                    <div style="font-size:1.5rem;margin-bottom:8px;">🔱</div>
+                    <h3 style="color:#ff8c00;font-size:1.1rem;margin-bottom:8px;">महाकाल ज्योतिष</h3>
+                    <p style="color:#ccc;font-size:0.85rem;line-height:1.4;">
+                        हटकेश्वर महाकाल ज्योतिष शोध संस्थान कई वर्षों से सेवारत रहा है निस्वार्थ भाव। से सेवा करना हमारा कर्तव्य है।
+प्रार्थनाकरते हैं कि भगवान महाकाल आप की सारी मनोकामना पूर्ण करें
+                    </p>
+                </div>
+                
+                <!-- Contact Info -->
+                <div style="text-align:center;">
+                    <h4 style="color:#fff200;font-size:1rem;margin-bottom:10px;">📞 संपर्क करें</h4>
+                    <div style="color:#ccc;font-size:0.85rem;line-height:1.6;">
+                        <div>📱 मोबाइल: +91 9826773135</div>
+                        <div>📧 ईमेल: nagarsatish293@gmail.com</div>
+                        <div>🕒 समय: सुबह 6 बजे - शाम 8 बजे</div>
+                    </div>
+                </div>
+                
+                <!-- Address -->
+                <div style="text-align:center;">
+                    <h4 style="color:#fff200;font-size:1rem;margin-bottom:10px;">📍 पता</h4>
+                    <div style="color:#ccc;font-size:0.85rem;line-height:1.4;">
+                        <div>महाकाल मंदिर के पास</div>
+                        <div>शिप्रा नदी तट, सिद्धवट घाट</div>
+                        <div>उज्जैन, मध्य प्रदेश - 456006</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Links -->
+            <div style="text-align:center;margin-bottom:15px;">
+                <h4 style="color:#fff200;font-size:1rem;margin-bottom:10px;">📱 सोशल मीडिया</h4>
+                <div style="display:flex;justify-content:center;gap:12px;">
+                    <a href="https://wa.me/9826773135" style="background:#25d366;color:#fff;padding:6px 12px;border-radius:15px;text-decoration:none;font-size:0.8rem;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        📱 WhatsApp
+                    </a>
+                    <a href="tel:+919826773135" style="background:#ff8c00;color:#fff;padding:6px 12px;border-radius:15px;text-decoration:none;font-size:0.8rem;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        📞 Call Now
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:15px;text-align:center;">
+                <p style="color:#ccc;font-size:0.8rem;margin-bottom:5px;">
+                    © 2025 महाकाल ज्योतिष – जय महाकाल 🔱
+                </p>
+                <p style="color:#999;font-size:0.7rem;">
+                    वैदिक पद्धति से पूजा पाठ | 100% प्रामाणिक सेवा | उज्जैन में सर्वश्रेष्ठ
+                </p>
+            </div>
         </div>
     </footer>
     
     <script src="script.js"></script>
     <script>
-    // Language switcher logic
-    function setLanguage(lang) {
-        document.querySelectorAll('.lang-hindi').forEach(el => el.style.display = (lang === 'hi' ? '' : 'none'));
-        document.querySelectorAll('.lang-english').forEach(el => el.style.display = (lang === 'en' ? '' : 'none'));
-        localStorage.setItem('lang', lang);
-    }
-    document.getElementById('langSwitcher').addEventListener('change', function() {
-        setLanguage(this.value);
-    });
-    // On page load, set language from localStorage or default to Hindi
-    (function(){
-        var lang = localStorage.getItem('lang') || 'hi';
-        document.getElementById('langSwitcher').value = lang;
-        setLanguage(lang);
-    })();
-
     // Professional Puja List Display Logic
     function getPujaList() {
         try {
@@ -166,10 +224,247 @@
                     price: 1200,
                     duration: '1.5-2 घंटे',
                     benefits: 'विघ्न निवारण, सफलता, नई शुरुआत'
+                },
+                { 
+                    name: 'पितृ पूजन (Pitru Pujan)', 
+                    desc: 'पितरों के निमित्त तिलपिण्डी श्राद्ध सोला पिंड श्राद पलास विधि नागवली नारायण वली। गीताजी के पाठ भागवत के मूलपाठ तर्पण ब्राह्मण भोजन आपके पितरों को मोक्ष की प्राप्ति के लिए स। ह विधि सम्पन्न किए जाते है मा। सिप्रा सिद्धवट घाट पर।', 
+                    price: 5100,
+                    duration: '4-5 घंटे',
+                    benefits: 'पितृ दोष निवारण, पितरों को मोक्ष, कुल शांति'
+                },
+                { 
+                    name: 'सत्यनारायण कथा (Satyanarayan Katha)', 
+                    desc: 'भगवान विष्णु की कथा के साथ विशेष पूजा। परिवार में सुख-शांति और समृद्धि प्रदान करता है।', 
+                    price: 1500,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'परिवार शांति, समृद्धि, मंगल कार्य'
+                },
+                { 
+                    name: 'हवन यज्ञ (Havan Yagya)', 
+                    desc: 'वैदिक मंत्रों के साथ विशेष हवन यज्ञ। वातावरण शुद्धि और सकारात्मक ऊर्जा प्रदान करता है।', 
+                    price: 2200,
+                    duration: '2-3 घंटे',
+                    benefits: 'वातावरण शुद्धि, सकारात्मक ऊर्जा, शांति'
+                },
+                { 
+                    name: 'कालसर्प दोष शांति (Kaal Sarp Dosh Shanti)', 
+                    desc: 'कालसर्प दोष निवारण के लिए विशेष पूजा। राहु-केतु के दोष से मुक्ति प्रदान करता है।', 
+                    price: 3500,
+                    duration: '3-4 घंटे',
+                    benefits: 'कालसर्प दोष निवारण, राहु-केतु शांति'
+                },
+                { 
+                    name: 'मंगल दोष शांति (Mangal Dosh Shanti)', 
+                    desc: 'मंगल ग्रह के दोष निवारण के लिए विशेष पूजा। मंगल दोष से मुक्ति और शांति प्रदान करता है।', 
+                    price: 2800,
+                    duration: '2.5-3 घंटे',
+                    benefits: 'मंगल दोष निवारण, वैवाहिक शांति'
+                },
+                { 
+                    name: 'शनि दोष शांति (Shani Dosh Shanti)', 
+                    desc: 'शनि ग्रह के दोष निवारण के लिए विशेष पूजा। शनि की कृपा और सफलता प्रदान करता है।', 
+                    price: 3200,
+                    duration: '3-3.5 घंटे',
+                    benefits: 'शनि दोष निवारण, सफलता, शांति'
+                },
+                { 
+                    name: 'ग्रह प्रवेश पूजा (Graha Pravesh Puja)', 
+                    desc: 'नए घर में प्रवेश के लिए विशेष पूजा। घर में सुख-शांति और समृद्धि प्रदान करता है।', 
+                    price: 1800,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'घर में शांति, समृद्धि, सुख'
+                },
+                { 
+                    name: 'वास्तु शांति पूजा (Vastu Shanti Puja)', 
+                    desc: 'वास्तु दोष निवारण के लिए विशेष पूजा। घर के वास्तु दोष को दूर करता है।', 
+                    price: 2400,
+                    duration: '2.5-3 घंटे',
+                    benefits: 'वास्तु दोष निवारण, घर में शांति'
+                },
+                { 
+                    name: 'सरस्वती पूजा (Saraswati Puja)', 
+                    desc: 'मां सरस्वती की विशेष पूजा। ज्ञान, विद्या और बुद्धि प्राप्ति के लिए।', 
+                    price: 1600,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'ज्ञान प्राप्ति, बुद्धि वृद्धि, विद्या लाभ'
+                },
+                { 
+                    name: 'लक्ष्मी पूजा (Lakshmi Puja)', 
+                    desc: 'मां लक्ष्मी की विशेष पूजा। धन-धान्य और समृद्धि प्राप्ति के लिए।', 
+                    price: 1900,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'धन लाभ, समृद्धि, आर्थिक सफलता'
+                },
+                { 
+                    name: 'दुर्गा पूजा (Durga Puja)', 
+                    desc: 'मां दुर्गा की विशेष पूजा। शक्ति प्राप्ति और सभी बाधाओं से मुक्ति के लिए।', 
+                    price: 2600,
+                    duration: '3-3.5 घंटे',
+                    benefits: 'शक्ति प्राप्ति, बाधा निवारण, सुरक्षा'
+                },
+                { 
+                    name: 'हनुमान पूजा (Hanuman Puja)', 
+                    desc: 'हनुमान जी की विशेष पूजा। शक्ति, साहस और भक्ति प्राप्ति के लिए।', 
+                    price: 1400,
+                    duration: '1.5-2 घंटे',
+                    benefits: 'शक्ति प्राप्ति, साहस, भक्ति'
+                },
+                { 
+                    name: 'राम पूजा (Ram Puja)', 
+                    desc: 'भगवान राम की विशेष पूजा। धर्म, अर्थ, काम और मोक्ष की प्राप्ति के लिए।', 
+                    price: 2000,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'धर्म लाभ, सफलता, मोक्ष प्राप्ति'
+                },
+                { 
+                    name: 'कृष्ण पूजा (Krishna Puja)', 
+                    desc: 'भगवान कृष्ण की विशेष पूजा। प्रेम, ज्ञान और आनंद की प्राप्ति के लिए।', 
+                    price: 2100,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'प्रेम प्राप्ति, ज्ञान, आनंद'
+                },
+                { 
+                    name: 'शिव पार्वती पूजा (Shiv Parvati Puja)', 
+                    desc: 'भगवान शिव और मां पार्वती की संयुक्त पूजा। वैवाहिक सुख और शांति प्राप्ति के लिए।', 
+                    price: 2800,
+                    duration: '3-3.5 घंटे',
+                    benefits: 'वैवाहिक सुख, शांति, प्रेम'
+                },
+                { 
+                    name: 'गुरु पूजा (Guru Puja)', 
+                    desc: 'गुरु की विशेष पूजा। ज्ञान, मार्गदर्शन और आध्यात्मिक प्रगति के लिए।', 
+                    price: 1700,
+                    duration: '2-2.5 घंटे',
+                    benefits: 'ज्ञान प्राप्ति, मार्गदर्शन, आध्यात्मिक लाभ'
                 }
             ];
             localStorage.setItem('mahakal_puja_list', JSON.stringify(defaultPujas));
         }
+    }
+    
+    // Force update puja list with new pujas
+    function updatePujaListWithNewPujas() {
+        var currentList = getPujaList();
+        var newPujas = [
+            { 
+                name: 'सत्यनारायण कथा (Satyanarayan Katha)', 
+                desc: 'भगवान विष्णु की कथा के साथ विशेष पूजा। परिवार में सुख-शांति और समृद्धि प्रदान करता है।', 
+                price: 1500,
+                duration: '2-2.5 घंटे',
+                benefits: 'परिवार शांति, समृद्धि, मंगल कार्य'
+            },
+            { 
+                name: 'हवन यज्ञ (Havan Yagya)', 
+                desc: 'वैदिक मंत्रों के साथ विशेष हवन यज्ञ। वातावरण शुद्धि और सकारात्मक ऊर्जा प्रदान करता है।', 
+                price: 2200,
+                duration: '2-3 घंटे',
+                benefits: 'वातावरण शुद्धि, सकारात्मक ऊर्जा, शांति'
+            },
+            { 
+                name: 'कालसर्प दोष शांति (Kaal Sarp Dosh Shanti)', 
+                desc: 'कालसर्प दोष निवारण के लिए विशेष पूजा। राहु-केतु के दोष से मुक्ति प्रदान करता है।', 
+                price: 3500,
+                duration: '3-4 घंटे',
+                benefits: 'कालसर्प दोष निवारण, राहु-केतु शांति'
+            },
+            { 
+                name: 'मंगल दोष शांति (Mangal Dosh Shanti)', 
+                desc: 'मंगल ग्रह के दोष निवारण के लिए विशेष पूजा। मंगल दोष से मुक्ति और शांति प्रदान करता है।', 
+                price: 2800,
+                duration: '2.5-3 घंटे',
+                benefits: 'मंगल दोष निवारण, वैवाहिक शांति'
+            },
+            { 
+                name: 'शनि दोष शांति (Shani Dosh Shanti)', 
+                desc: 'शनि ग्रह के दोष निवारण के लिए विशेष पूजा। शनि की कृपा और सफलता प्रदान करता है।', 
+                price: 3200,
+                duration: '3-3.5 घंटे',
+                benefits: 'शनि दोष निवारण, सफलता, शांति'
+            },
+            { 
+                name: 'ग्रह प्रवेश पूजा (Graha Pravesh Puja)', 
+                desc: 'नए घर में प्रवेश के लिए विशेष पूजा। घर में सुख-शांति और समृद्धि प्रदान करता है।', 
+                price: 1800,
+                duration: '2-2.5 घंटे',
+                benefits: 'घर में शांति, समृद्धि, सुख'
+            },
+            { 
+                name: 'वास्तु शांति पूजा (Vastu Shanti Puja)', 
+                desc: 'वास्तु दोष निवारण के लिए विशेष पूजा। घर के वास्तु दोष को दूर करता है।', 
+                price: 2400,
+                duration: '2.5-3 घंटे',
+                benefits: 'वास्तु दोष निवारण, घर में शांति'
+            },
+            { 
+                name: 'सरस्वती पूजा (Saraswati Puja)', 
+                desc: 'मां सरस्वती की विशेष पूजा। ज्ञान, विद्या और बुद्धि प्राप्ति के लिए।', 
+                price: 1600,
+                duration: '2-2.5 घंटे',
+                benefits: 'ज्ञान प्राप्ति, बुद्धि वृद्धि, विद्या लाभ'
+            },
+            { 
+                name: 'लक्ष्मी पूजा (Lakshmi Puja)', 
+                desc: 'मां लक्ष्मी की विशेष पूजा। धन-धान्य और समृद्धि प्राप्ति के लिए।', 
+                price: 1900,
+                duration: '2-2.5 घंटे',
+                benefits: 'धन लाभ, समृद्धि, आर्थिक सफलता'
+            },
+            { 
+                name: 'दुर्गा पूजा (Durga Puja)', 
+                desc: 'मां दुर्गा की विशेष पूजा। शक्ति प्राप्ति और सभी बाधाओं से मुक्ति के लिए।', 
+                price: 2600,
+                duration: '3-3.5 घंटे',
+                benefits: 'शक्ति प्राप्ति, बाधा निवारण, सुरक्षा'
+            },
+            { 
+                name: 'हनुमान पूजा (Hanuman Puja)', 
+                desc: 'हनुमान जी की विशेष पूजा। शक्ति, साहस और भक्ति प्राप्ति के लिए।', 
+                price: 1400,
+                duration: '1.5-2 घंटे',
+                benefits: 'शक्ति प्राप्ति, साहस, भक्ति'
+            },
+            { 
+                name: 'राम पूजा (Ram Puja)', 
+                desc: 'भगवान राम की विशेष पूजा। धर्म, अर्थ, काम और मोक्ष की प्राप्ति के लिए।', 
+                price: 2000,
+                duration: '2-2.5 घंटे',
+                benefits: 'धर्म लाभ, सफलता, मोक्ष प्राप्ति'
+            },
+            { 
+                name: 'कृष्ण पूजा (Krishna Puja)', 
+                desc: 'भगवान कृष्ण की विशेष पूजा। प्रेम, ज्ञान और आनंद की प्राप्ति के लिए।', 
+                price: 2100,
+                duration: '2-2.5 घंटे',
+                benefits: 'प्रेम प्राप्ति, ज्ञान, आनंद'
+            },
+            { 
+                name: 'शिव पार्वती पूजा (Shiv Parvati Puja)', 
+                desc: 'भगवान शिव और मां पार्वती की संयुक्त पूजा। वैवाहिक सुख और शांति प्राप्ति के लिए।', 
+                price: 2800,
+                duration: '3-3.5 घंटे',
+                benefits: 'वैवाहिक सुख, शांति, प्रेम'
+            },
+            { 
+                name: 'गुरु पूजा (Guru Puja)', 
+                desc: 'गुरु की विशेष पूजा। ज्ञान, मार्गदर्शन और आध्यात्मिक प्रगति के लिए।', 
+                price: 1700,
+                duration: '2-2.5 घंटे',
+                benefits: 'ज्ञान प्राप्ति, मार्गदर्शन, आध्यात्मिक लाभ'
+            }
+        ];
+        
+        // Add new pujas to existing list (avoid duplicates)
+        newPujas.forEach(function(newPuja) {
+            var exists = currentList.some(function(existingPuja) {
+                return existingPuja.name === newPuja.name;
+            });
+            if (!exists) {
+                currentList.push(newPuja);
+            }
+        });
+        
+        localStorage.setItem('mahakal_puja_list', JSON.stringify(currentList));
+        console.log('New pujas added successfully! Total pujas:', currentList.length);
     }
     
     function renderPujaList() {
@@ -237,32 +532,109 @@
         const address = document.getElementById('userAddress').value.trim();
         const pujaName = document.getElementById('pujaNameHidden').value;
         if(!name || !mobile || !address) return;
-        // Save to localStorage
+        
+        // Show payment modal instead of direct submission
+        document.getElementById('paymentAmount').textContent = selectedPuja ? selectedPuja.price : '0';
+        document.getElementById('paymentPujaName').textContent = pujaName;
+        document.getElementById('pujaBookingModal').style.display = 'none';
+        document.getElementById('paymentModal').style.display = 'flex';
+    };
+    
+    // Payment modal close functionality
+    document.getElementById('closePaymentModal').onclick = function() {
+        document.getElementById('paymentModal').style.display = 'none';
+    };
+    document.getElementById('paymentModal').onclick = function(e) {
+        if(e.target === this) this.style.display = 'none';
+    };
+    
+    // Payment functions
+    function makePayment() {
+        const amount = selectedPuja ? selectedPuja.price : 0;
+        const pujaName = selectedPuja ? selectedPuja.name : '';
+        const userName = document.getElementById('userName').value.trim();
+        const userMobile = document.getElementById('userMobile').value.trim();
+        const upiId = document.getElementById('upiId').value.trim();
+
+        if (!upiId) {
+            alert('कृपया UPI ID दर्ज करें।');
+            return;
+        }
+
+        // Simple UPI payment URL without encoding issues
+        const paymentUrl = `upi://pay?pa=${upiId}&pn=MahakalJyotish&am=${amount}&tn=${pujaName}`;
+        
+        // Try to open UPI payment
+        try {
+            window.location.href = paymentUrl;
+        } catch (error) {
+            // Fallback: copy UPI ID to clipboard
+            navigator.clipboard.writeText(upiId).then(function() {
+                alert(`UPI ID ${upiId} कॉपी हो गई है। कृपया अपने UPI app में पेस्ट करें और ₹${amount} भेजें।`);
+            });
+        }
+    }
+    
+    function manualPayment() {
+        const amount = selectedPuja ? selectedPuja.price : 0;
+        const pujaName = selectedPuja ? selectedPuja.name : '';
+        const userName = document.getElementById('userName').value.trim();
+        const userMobile = document.getElementById('userMobile').value.trim();
+        const userAddress = document.getElementById('userAddress').value.trim();
+        
+        const msg = `नमस्ते,\nमैंने ${pujaName} के लिए ₹${amount} का भुगतान किया है।\nनाम: ${userName}\nमोबाइल: ${userMobile}\nपता: ${userAddress}`;
+        const waUrl = `https://wa.me/919691252214?text=${encodeURIComponent(msg)}`;
+        window.open(waUrl, '_blank');
+        
+        // Save booking to localStorage after payment
         var bookings = JSON.parse(localStorage.getItem('mahakal_bookings') || '[]');
         const bookingData = {
             pujaName: pujaName,
-            pujaPrice: selectedPuja ? selectedPuja.price : '',
-            userName: name,
-            userMobile: mobile,
-            userAddress: address,
+            pujaPrice: amount,
+            userName: userName,
+            userMobile: userMobile,
+            userAddress: userAddress,
             bookingDate: new Date().toISOString().split('T')[0],
-            status: 'Pending'
+            status: 'Payment Pending'
         };
         bookings.push(bookingData);
         localStorage.setItem('mahakal_bookings', JSON.stringify(bookings));
-        // WhatsApp send
-        const msg = `नमस्ते,\nमुझे ${pujaName} बुक करनी है।\nनाम: ${name}\nमोबाइल: ${mobile}\nपता: ${address}`;
-        const waUrl = `https://wa.me/919691252214?text=${encodeURIComponent(msg)}`;
+        
+        // Close payment modal
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+    
+    function openWhatsApp() {
+        const amount = selectedPuja ? selectedPuja.price : 0;
+        const pujaName = selectedPuja ? selectedPuja.name : '';
+        const userName = document.getElementById('userName').value.trim();
+        const userMobile = document.getElementById('userMobile').value.trim();
+        const userAddress = document.getElementById('userAddress').value.trim();
+        
+        const msg = `नमस्ते,\nमैंने ${pujaName} के लिए ₹${amount} का भुगतान किया है।\nनाम: ${userName}\nमोबाइल: ${userMobile}\nपता: ${userAddress}`;
+        const waUrl = `https://wa.me/919826773135?text=${encodeURIComponent(msg)}`;
         window.open(waUrl, '_blank');
-        // Show success
-        document.getElementById('pujaBookingSuccess').textContent = 'बुकिंग सफलतापूर्वक सबमिट हो गई! हम जल्द ही आपसे संपर्क करेंगे।';
-        document.getElementById('pujaBookingSuccess').style.display = 'block';
-        setTimeout(()=>{
-            document.getElementById('pujaBookingModal').style.display = 'none';
-        }, 1800);
-    };
+        
+        // Save booking to localStorage after payment
+        var bookings = JSON.parse(localStorage.getItem('mahakal_bookings') || '[]');
+        const bookingData = {
+            pujaName: pujaName,
+            pujaPrice: amount,
+            userName: userName,
+            userMobile: userMobile,
+            userAddress: userAddress,
+            bookingDate: new Date().toISOString().split('T')[0],
+            status: 'Payment Pending'
+        };
+        bookings.push(bookingData);
+        localStorage.setItem('mahakal_bookings', JSON.stringify(bookings));
+        
+        // Close payment modal
+        document.getElementById('paymentModal').style.display = 'none';
+    }
     document.addEventListener('DOMContentLoaded', function() {
         setDefaultPujasIfNone();
+        updatePujaListWithNewPujas(); // Add new pujas to existing list
         var navBtn = document.getElementById('pujaBookingNavBtn');
         var pujaSection = document.getElementById('puja-list');
         if(navBtn && pujaSection) {
