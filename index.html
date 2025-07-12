@@ -47,26 +47,67 @@
 
     <!-- Puja Booking Modal -->
     <div id="pujaBookingModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(34,0,51,0.75);align-items:center;justify-content:center;">
-      <div style="background:#fff;border-radius:14px;max-width:370px;width:90vw;padding:28px 18px 18px 18px;box-shadow:0 8px 32px rgba(0,0,0,0.25);position:relative;">
+      <div style="background:#fff;border-radius:14px;max-width:700px;width:90vw;padding:28px 18px 18px 18px;box-shadow:0 8px 32px rgba(0,0,0,0.25);position:relative;">
         <button id="closePujaModal" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.5rem;color:#ff8c00;cursor:pointer;">&times;</button>
-        <h2 style="color:#ff8c00;text-align:center;margin-bottom:10px;font-size:1.3rem;">पूजा बुकिंग फॉर्म</h2>
-        <form id="pujaBookingForm">
-          <div style="margin-bottom:12px;">
-            <label for="userName" style="color:#2d0036;font-weight:600;">नाम</label>
-            <input type="text" id="userName" name="userName" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+        
+        <div style="display:flex;gap:20px;align-items:flex-start;">
+          <!-- Consultation Section (Left Side) -->
+          <div style="flex:1;background:linear-gradient(135deg,#ff8c00,#fff200);border-radius:12px;padding:20px;color:#2d0036;">
+            <h3 style="text-align:center;margin-bottom:15px;font-size:1.2rem;font-weight:700;">
+              <span style="font-size:1.3em;">📞</span> परामर्श करें
+            </h3>
+            <p style="text-align:center;margin-bottom:20px;font-size:0.95rem;line-height:1.5;">
+              पूजा के बारे में विस्तृत जानकारी के लिए हमारे विशेषज्ञ से सीधे बात करें
+            </p>
+            <div style="text-align:center;margin-bottom:15px;">
+              <div style="font-size:1.1rem;font-weight:700;margin-bottom:5px;">पं सतीश नागर जी से बात करें</div>
+              <div style="font-size:1.3rem;font-weight:700;color:#2d0036;">9826773135</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <a href="tel:9826773135" style="background:#2d0036;color:#fff;text-decoration:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;font-size:1rem;transition:all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <i class="fas fa-phone"></i> कॉल करें
+              </a>
+              <a href="https://wa.me/919826773135" target="_blank" style="background:#25d366;color:#fff;text-decoration:none;padding:12px;border-radius:8px;text-align:center;font-weight:600;font-size:1rem;transition:all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <i class="fab fa-whatsapp"></i> WhatsApp पर संपर्क करें
+              </a>
+            </div>
+            <div style="margin-top:15px;padding:10px;background:rgba(45,0,54,0.1);border-radius:8px;font-size:0.9rem;">
+              <div style="font-weight:600;margin-bottom:5px;">🕐 उपलब्धता:</div>
+              <div>सुबह 6:00 बजे - शाम 9:00 बजे</div>
+              <div>सभी दिन उपलब्ध</div>
+            </div>
           </div>
-          <div style="margin-bottom:12px;">
-            <label for="userMobile" style="color:#2d0036;font-weight:600;">मोबाइल नंबर</label>
-            <input type="tel" id="userMobile" name="userMobile" required pattern="[0-9]{10}" maxlength="10" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+          
+          <!-- Booking Form Section (Right Side) -->
+          <div style="flex:1;">
+            <h2 style="color:#ff8c00;text-align:center;margin-bottom:15px;font-size:1.3rem;">पूजा बुकिंग फॉर्म</h2>
+            <form id="pujaBookingForm">
+              <div style="margin-bottom:12px;">
+                <label for="userName" style="color:#2d0036;font-weight:600;">नाम</label>
+                <input type="text" id="userName" name="userName" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+              </div>
+              <div style="margin-bottom:12px;">
+                <label for="userGotra" style="color:#2d0036;font-weight:600;">गोत्र</label>
+                <input type="text" id="userGotra" name="userGotra" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+              </div>
+              <div style="margin-bottom:12px;">
+                <label for="userFatherName" style="color:#2d0036;font-weight:600;">पिता का नाम</label>
+                <input type="text" id="userFatherName" name="userFatherName" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+              </div>
+              <div style="margin-bottom:12px;">
+                <label for="userMobile" style="color:#2d0036;font-weight:600;">मोबाइल नंबर</label>
+                <input type="tel" id="userMobile" name="userMobile" required pattern="[0-9]{10}" maxlength="10" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;">
+              </div>
+              <div style="margin-bottom:12px;">
+                <label for="userAddress" style="color:#2d0036;font-weight:600;">पूरा पता</label>
+                <textarea id="userAddress" name="userAddress" placeholder="गली/मोहल्ला, शहर, जिला, राज्य, पिन कोड" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;resize:vertical;min-height:60px;"></textarea>
+              </div>
+              <input type="hidden" id="pujaNameHidden" name="pujaNameHidden">
+              <button type="submit" style="width:100%;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:12px 0;font-size:1.1rem;cursor:pointer;">बुकिंग सबमिट करें</button>
+            </form>
+            <div id="pujaBookingSuccess" style="display:none;color:green;text-align:center;margin-top:12px;font-weight:600;"></div>
           </div>
-          <div style="margin-bottom:16px;">
-            <label for="userAddress" style="color:#2d0036;font-weight:600;">पता</label>
-            <textarea id="userAddress" name="userAddress" required style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #ccc;margin-top:4px;resize:vertical;min-height:48px;"></textarea>
-          </div>
-          <input type="hidden" id="pujaNameHidden" name="pujaNameHidden">
-          <button type="submit" style="width:100%;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:12px 0;font-size:1.1rem;cursor:pointer;">बुकिंग सबमिट करें</button>
-        </form>
-        <div id="pujaBookingSuccess" style="display:none;color:green;text-align:center;margin-top:12px;font-weight:600;"></div>
+        </div>
       </div>
     </div>
 
@@ -520,10 +561,12 @@
         const amount = selectedPuja ? selectedPuja.price : 0;
         const pujaName = selectedPuja ? selectedPuja.name : '';
         const userName = document.getElementById('userName').value.trim();
+        const userGotra = document.getElementById('userGotra').value.trim();
+        const userFatherName = document.getElementById('userFatherName').value.trim();
         const userMobile = document.getElementById('userMobile').value.trim();
         const userAddress = document.getElementById('userAddress').value.trim();
         
-        const msg = `नमस्ते,\nमैंने ${pujaName} के लिए ₹${amount} का भुगतान किया है।\nनाम: ${userName}\nमोबाइल: ${userMobile}\nपता: ${userAddress}`;
+        const msg = `नमस्ते,\nमैंने ${pujaName} के लिए ₹${amount} का भुगतान किया है।\nनाम: ${userName}\nगोत्र: ${userGotra}\nपिता का नाम: ${userFatherName}\nमोबाइल: ${userMobile}\nपता: ${userAddress}`;
         const waUrl = `https://wa.me/919691252214?text=${encodeURIComponent(msg)}`;
         window.open(waUrl, '_blank');
         
@@ -533,6 +576,8 @@
             pujaName: pujaName,
             pujaPrice: amount,
             userName: userName,
+            userGotra: userGotra,
+            userFatherName: userFatherName,
             userMobile: userMobile,
             userAddress: userAddress,
             bookingDate: new Date().toISOString().split('T')[0],
@@ -549,10 +594,12 @@
         const amount = selectedPuja ? selectedPuja.price : 0;
         const pujaName = selectedPuja ? selectedPuja.name : '';
         const userName = document.getElementById('userName').value.trim();
+        const userGotra = document.getElementById('userGotra').value.trim();
+        const userFatherName = document.getElementById('userFatherName').value.trim();
         const userMobile = document.getElementById('userMobile').value.trim();
         const userAddress = document.getElementById('userAddress').value.trim();
         
-        const msg = `नमस्ते,\nमैंने ${pujaName} के लिए ₹${amount} का भुगतान किया है।\nनाम: ${userName}\nमोबाइल: ${userMobile}\nपता: ${userAddress}`;
+        const msg = `नमस्ते,\nमैंने ${pujaName} के लिए ₹${amount} का भुगतान किया है।\nनाम: ${userName}\nगोत्र: ${userGotra}\nपिता का नाम: ${userFatherName}\nमोबाइल: ${userMobile}\nपता: ${userAddress}`;
         const waUrl = `https://wa.me/919826773135?text=${encodeURIComponent(msg)}`;
         window.open(waUrl, '_blank');
         
@@ -562,6 +609,8 @@
             pujaName: pujaName,
             pujaPrice: amount,
             userName: userName,
+            userGotra: userGotra,
+            userFatherName: userFatherName,
             userMobile: userMobile,
             userAddress: userAddress,
             bookingDate: new Date().toISOString().split('T')[0],
