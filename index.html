@@ -57,10 +57,10 @@
               <span style="font-size:1.3em;">📞</span> परामर्श करें
             </h3>
             <p style="text-align:center;margin-bottom:20px;font-size:0.95rem;line-height:1.5;">
-              पूजा के बारे में विस्तृत जानकारी के लिए हमारे विशेषज्ञ से सीधे बात करें
+              पूजा के बारे में विस्तृत जानकारी के लिए हमारे ज्योतिष आचार्य से सीधे बात करें
             </p>
             <div style="text-align:center;margin-bottom:15px;">
-              <div style="font-size:1.1rem;font-weight:700;margin-bottom:5px;">पं सतीश नागर जी से बात करें</div>
+              <div style="font-size:1.1rem;font-weight:700;margin-bottom:5px;">यज्ञ आचार्य सतीश नागर जी से बात करें</div>
               <div style="font-size:1.3rem;font-weight:700;color:#2d0036;">9826773135</div>
             </div>
             <div style="display:flex;flex-direction:column;gap:10px;">
@@ -625,6 +625,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         setDefaultPujasIfNone();
         updatePujaListWithNewPujas(); // Add new pujas to existing list
+        
         var navBtn = document.getElementById('pujaBookingNavBtn');
         var pujaSection = document.getElementById('puja-list');
         if(navBtn && pujaSection) {
@@ -654,6 +655,7 @@
             card.className = 'pandit-card';
             let html = `<div class=\"pandit-photo\"><img src=\"${panditData.photo}\" alt=\"Pandit Photo\" style=\"max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;\"></div>`;
             if(panditData.name) html += `<h3>${panditData.name}</h3>`;
+            if(panditData.phone) html += `<p class=\"phone\"><i class=\"fas fa-phone\"></i> <a href=\"tel:${panditData.phone}\" style=\"color:#ff8c00;text-decoration:none;\">${panditData.phone}</a></p>`;
             if(panditData.exp) html += `<p class=\"experience\">${panditData.exp}</p>`;
             if(panditData.spec) html += `<p class=\"specialization\">${panditData.spec}</p>`;
             card.innerHTML = html;
@@ -662,5 +664,30 @@
     }
 })();
 </script>
+
+    <!-- Footer Section -->
+    <footer class="footer" style="background:linear-gradient(135deg,#2d0036,#4a0066);color:#fff;padding:15px 0;margin-top:30px;">
+        <div class="container">
+            <div style="text-align:center;">
+                <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
+                    <a href="tel:9826773135" style="color:#fff;text-decoration:none;font-size:1rem;font-weight:600;">
+                        <i class="fas fa-phone"></i> 9826773135
+                    </a>
+                    <a href="tel:8305601004" style="color:#fff;text-decoration:none;font-size:1rem;font-weight:600;">
+                        <i class="fas fa-phone"></i> 8305601004
+                    </a>
+                    <a href="tel:9826989685" style="color:#fff;text-decoration:none;font-size:1rem;font-weight:600;">
+                        <i class="fas fa-phone"></i> 9826989685
+                    </a>
+                    <a href="tel:9691252214" style="color:#fff;text-decoration:none;font-size:1rem;font-weight:600;">
+                        <i class="fas fa-phone"></i> 9691252214
+                    </a>
+                    <a href="tel:9009048278" style="color:#fff;text-decoration:none;font-size:1rem;font-weight:600;">
+                        <i class="fas fa-phone"></i> 9009048278
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
-</html> 
+</html>
