@@ -432,6 +432,13 @@
                 price: 1700,
                 duration: '2-2.5 घंटे',
                 benefits: 'ज्ञान प्राप्ति, मार्गदर्शन, आध्यात्मिक लाभ'
+            },
+            { 
+                name: 'महामृत्युंजय जाप (Mahamrityunjaya Jaap)', 
+                desc: 'महामृत्युंजय मंत्र का विशेष जाप। दीर्घायु, स्वास्थ्य लाभ और मृत्यु भय से मुक्ति प्रदान करता है।', 
+                price: 4100,
+                duration: '4-5 घंटे',
+                benefits: 'दीर्घायु, स्वास्थ्य लाभ, मृत्यु भय निवारण'
             }
         ];
         
@@ -643,25 +650,75 @@
     </script>
     <script>
 (function(){
-    // Show uploaded pandit photo and details from localStorage if available
-    var panditData = localStorage.getItem('mahakal_pandit_photo');
-    if(panditData) {
-        try { panditData = JSON.parse(panditData); } catch { panditData = null; }
-    }
-    if(panditData && panditData.photo) {
+    // Show all uploaded pandit photos and details from localStorage
+    function loadPanditsFromStorage() {
+        var panditList = [];
+        try {
+            panditList = JSON.parse(localStorage.getItem('mahakal_pandit_list')) || [];
+        } catch (e) {
+            panditList = [];
+        }
+        
         var grid = document.querySelector('.pandit-grid');
-        if(grid) {
-            var card = document.createElement('div');
-            card.className = 'pandit-card';
-            let html = `<div class=\"pandit-photo\"><img src=\"${panditData.photo}\" alt=\"Pandit Photo\" style=\"max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;\"></div>`;
-            if(panditData.name) html += `<h3>${panditData.name}</h3>`;
-            if(panditData.phone) html += `<p class=\"phone\"><i class=\"fas fa-phone\"></i> <a href=\"tel:${panditData.phone}\" style=\"color:#ff8c00;text-decoration:none;\">${panditData.phone}</a></p>`;
-            if(panditData.exp) html += `<p class=\"experience\">${panditData.exp}</p>`;
-            if(panditData.spec) html += `<p class=\"specialization\">${panditData.spec}</p>`;
-            card.innerHTML = html;
-            grid.appendChild(card);
+        if(grid && panditList.length > 0) {
+            // Clear existing content
+            grid.innerHTML = '';
+            
+            // Add each pandit as a card
+            panditList.forEach(function(pandit) {
+                var card = document.createElement('div');
+                card.className = 'pandit-card';
+                let html = `<div class="pandit-photo"><img src="${pandit.photo}" alt="Pandit Photo" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;"></div>`;
+                if(pandit.name) html += `<h3>${pandit.name}</h3>`;
+                if(pandit.phone) html += `<p class="phone"><i class="fas fa-phone"></i> <a href="tel:${pandit.phone}" style="color:#ff8c00;text-decoration:none;">${pandit.phone}</a></p>`;
+                if(pandit.exp) html += `<p class="experience">${pandit.exp}</p>`;
+                if(pandit.spec) html += `<p class="specialization">${pandit.spec}</p>`;
+                card.innerHTML = html;
+                grid.appendChild(card);
+            });
+        } else if(grid) {
+            // Show default pandit when no pandits are added
+            grid.innerHTML = `
+                <div class="pandit-card">
+                    <div class="pandit-photo">
+                        <img src="satish.jpg" alt="Pandit Satish Nagar" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;">
+                    </div>
+                    <h3>यज्ञ आचार्य सतीश नागर जी</h3>
+                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9826773135" style="color:#ff8c00;text-decoration:none;">9826773135</a></p>
+                    <p class="experience">20+ वर्षों का अनुभव</p>
+                    <p class="specialization">वैदिक पूजा एवं ज्योतिष</p>
+                </div>
+                <div class="pandit-card">
+                    <div class="pandit-photo">
+                        <div style="width:100px;height:100px;border-radius:50%;border:3px solid #ff8c00;background:linear-gradient(135deg,#ff8c00,#fff200);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#2d0036;font-weight:bold;">🕉️</div>
+                    </div>
+                    <h3>पंडित जी</h3>
+                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:8305601004" style="color:#ff8c00;text-decoration:none;">8305601004</a></p>
+                    <p class="experience">15+ वर्षों का अनुभव</p>
+                    <p class="specialization">मंत्र जाप एवं हवन</p>
+                </div>
+                <div class="pandit-card">
+                    <div class="pandit-photo">
+                        <div style="width:100px;height:100px;border-radius:50%;border:3px solid #ff8c00;background:linear-gradient(135deg,#ff8c00,#fff200);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#2d0036;font-weight:bold;">🔱</div>
+                    </div>
+                    <h3>आचार्य जी</h3>
+                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9826989685" style="color:#ff8c00;text-decoration:none;">9826989685</a></p>
+                    <p class="experience">18+ वर्षों का अनुभव</p>
+                    <p class="specialization">कुंडली विश्लेषण</p>
+                </div>
+            `;
         }
     }
+    
+    // Load pandits on page load
+    loadPanditsFromStorage();
+    
+    // Listen for storage changes to update pandits in real-time
+    window.addEventListener('storage', function(e) {
+        if(e.key === 'mahakal_pandit_list') {
+            loadPanditsFromStorage();
+        }
+    });
 })();
 </script>
 
