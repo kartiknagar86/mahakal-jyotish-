@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Mahakal Jyotish</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #2d0036 0%, #ff8c00 100%);
+            color: #fff;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .admin-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(34, 0, 51, 0.95);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            padding: 32px 20px 24px 20px;
+            position: relative;
+        }
+
+
+        .admin-title {
+            text-align: center;
+            color: #ff8c00;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .admin-subtitle {
+            text-align: center;
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .login-form {
+            max-width: 350px;
+            margin: 60px auto 0 auto;
+            background: rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 32px 24px 24px 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 6px;
+            color: #ff8c00;
+            font-weight: 500;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 18px;
+            border: none;
+            border-radius: 6px;
+            background: #fff;
+            color: #2d0036;
+            font-size: 1rem;
+        }
+        .login-form button {
+            width: 100%;
+            background: linear-gradient(90deg, #ff8c00 0%, #fff200 100%);
+            color: #2d0036;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-form button:hover {
+            background: linear-gradient(90deg, #fff200 0%, #ff8c00 100%);
+        }
+        .error-msg {
+            color: #ff3b3b;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 0.98rem;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .dashboard-header .admin-title {
+            margin-bottom: 0;
+        }
+        .logout-btn {
+            background: linear-gradient(90deg, #ff8c00 0%, #fff200 100%);
+            color: #2d0036;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background: linear-gradient(90deg, #fff200 0%, #ff8c00 100%);
+        }
+        .dashboard-section {
+            margin-bottom: 36px;
+        }
+        .section-title {
+            color: #fff200;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.07);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+        }
+        th {
+            background: #ff8c00;
+            color: #2d0036;
+            font-weight: 700;
+        }
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.04);
+        }
+        tr:nth-child(odd) {
+            background: rgba(255,255,255,0.09);
+        }
+        .photo-upload-section {
+            background: rgba(255,255,255,0.07);
+            border-radius: 10px;
+            padding: 18px 14px;
+            text-align: center;
+        }
+        .photo-upload-section label {
+            color: #fff200;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .photo-preview {
+            margin: 12px 0;
+        }
+        .photo-preview img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ff8c00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .remove-photo-btn {
+            background: #ff3b3b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 16px;
+            font-size: 0.98rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .remove-photo-btn:hover {
+            background: #b30000;
+        }
+        
+        /* Pandit management styles */
+        .pandit-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+        .pandit-item:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        .pandit-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #ff8c00;
+            object-fit: cover;
+        }
+        .pandit-info {
+            flex: 1;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        .pandit-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .pandit-actions button {
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .edit-pandit-btn {
+            background: #ff8c00;
+            color: #fff;
+        }
+        .edit-pandit-btn:hover {
+            background: #e67e00;
+        }
+        .delete-pandit-btn {
+            background: #ff3b3b;
+            color: #fff;
+        }
+        .delete-pandit-btn:hover {
+            background: #e62e2e;
+        }
+        @media (max-width: 700px) {
+            .admin-container {
+                padding: 10px 2vw 18px 2vw;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .admin-title {
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+            th, td {
+                font-size: 0.98rem;
+                padding: 7px 4px;
+            }
+        }
+        @media (max-width: 480px) {
+            .admin-container {
+                margin: 0;
+                border-radius: 0;
+            }
+            .login-form {
+                padding: 18px 6px 16px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container" id="adminApp">
+        <!-- Content will be injected by JS -->
+    </div>
+    <script>
+    // --- Login State Management ---
+    const DEFAULT_ADMIN_USERNAME = 'admin';
+    const DEFAULT_ADMIN_PASS = 'Kartik@2006';
+    const ADMIN_CRED_KEY = 'mahakal_admin_cred';
+    const APP_KEY = 'mahakal_admin_loggedin';
+
+    function getAdminCred() {
+        try {
+            const cred = JSON.parse(localStorage.getItem(ADMIN_CRED_KEY));
+            if (cred && cred.username && cred.password) return cred;
+        } catch {}
+        return { username: DEFAULT_ADMIN_USERNAME, password: DEFAULT_ADMIN_PASS };
+    }
+    function setAdminCred(username, password) {
+        localStorage.setItem(ADMIN_CRED_KEY, JSON.stringify({ username, password }));
+    }
+
+
+    function renderLogin() {
+        document.getElementById('adminApp').innerHTML = `
+            <div class="admin-title">🔐 Admin Login</div>
+            <div class="admin-subtitle">Mahakal Jyotish Dashboard Access</div>
+            <form class="login-form" id="loginForm">
+                <div class="error-msg" id="loginError" style="display:none;"></div>
+                <label for="username">Username</label>
+                <input type="text" id="username" required autocomplete="username">
+                <label for="password">Password</label>
+                <input type="password" id="password" required autocomplete="current-password">
+                <button type="submit">Login</button>
+            </form>
+        `;
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const cred = getAdminCred();
+            if(username === cred.username && pass === cred.password) {
+                localStorage.setItem(APP_KEY, 'true');
+                renderDashboard();
+            } else {
+                const err = document.getElementById('loginError');
+                err.textContent = 'Invalid username or password';
+                err.style.display = 'block';
+            }
+        };
+    }
+
+    function renderDashboard() {
+        document.getElementById('adminApp').innerHTML = `
+            <div class="dashboard-header">
+                <div class="admin-title">🕉️ Mahakal Jyotish Admin</div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            <div class="dashboard-section">
+                <div class="section-title"><i class="fas fa-user-cog"></i> Change Username/Password</div>
+                <form id="changeCredForm" style="max-width:400px;background:rgba(255,255,255,0.07);padding:16px 12px;border-radius:10px;">
+                    <label for="oldPassword">Current Password</label>
+                    <input type="password" id="oldPassword" required placeholder="Current Password">
+                    <label for="newUsername">New Username</label>
+                    <input type="text" id="newUsername" required placeholder="New Username">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" required placeholder="New Password">
+                    <button type="submit" style="margin-top:10px;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:600;border:none;border-radius:6px;padding:8px 16px;">Change</button>
+                    <div id="credChangeMsg" style="margin-top:8px;font-size:0.98rem;"></div>
+                </form>
+            </div>
+            <!-- Manage Pujas Section -->
+            <div class="dashboard-section" id="managePujasSection">
+                <div class="section-title">🕉️ Manage Pujas</div>
+                <form id="managePujaForm" style="margin-bottom:18px;display:flex;flex-wrap:wrap;gap:10px;align-items:end;background:rgba(255,255,255,0.07);padding:14px 10px;border-radius:10px;">
+                    <input type="text" id="managePujaName" placeholder="Puja Name" required style="flex:1;min-width:120px;">
+                    <textarea id="managePujaDesc" placeholder="Description" required style="flex:2;min-width:140px;max-width:220px;height:38px;resize:vertical;"></textarea>
+                    <div style="display:flex;align-items:center;gap:4px;flex:1;min-width:90px;">
+                        <span style="color:#ff8c00;font-weight:700;font-size:1.1rem;">₹</span>
+                        <input type="number" id="managePujaPrice" placeholder="Price" min="0" required style="width:90px;">
+                    </div>
+                    <button type="submit" style="background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:600;border:none;border-radius:6px;padding:8px 16px;">
+                        Add Puja
+                    </button>
+                </form>
+                <div style="overflow-x:auto;">
+                <table id="managePujaTable" style="min-width:400px;">
+                    <thead>
+                        <tr>
+                            <th>Puja Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Duration</th>
+                            <th>Benefits</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="managePujaTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            <!-- Edit Puja Modal -->
+            <div id="editPujaModal" style="display:none;position:fixed;z-index:10000;left:0;top:0;width:100vw;height:100vh;background:rgba(34,0,51,0.85);align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:16px;max-width:500px;width:90vw;padding:32px 24px 24px 24px;box-shadow:0 12px 40px rgba(0,0,0,0.3);position:relative;">
+                    <button id="closeEditModal" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.8rem;color:#ff8c00;cursor:pointer;">&times;</button>
+                    <h2 style="color:#ff8c00;text-align:center;margin-bottom:20px;font-size:1.4rem;">✏️ पूजा संपादित करें</h2>
+                    
+                    <form id="editPujaForm" style="display:flex;flex-direction:column;gap:12px;">
+                        <input type="hidden" id="editPujaIndex">
+                        
+                        <div>
+                            <label for="editPujaName" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">पूजा का नाम</label>
+                            <input type="text" id="editPujaName" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div>
+                            <label for="editPujaDesc" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">विवरण</label>
+                            <textarea id="editPujaDesc" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;resize:vertical;min-height:60px;"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="editPujaPrice" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">मूल्य (₹)</label>
+                            <input type="number" id="editPujaPrice" min="0" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div>
+                            <label for="editPujaDuration" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">अवधि</label>
+                            <input type="text" id="editPujaDuration" placeholder="जैसे: 2-3 घंटे" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div>
+                            <label for="editPujaBenefits" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">लाभ</label>
+                            <input type="text" id="editPujaBenefits" placeholder="जैसे: शांति, सफलता" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div style="display:flex;gap:10px;margin-top:10px;">
+                            <button type="submit" style="flex:1;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:600;border:none;border-radius:6px;padding:12px;cursor:pointer;">
+                                💾 अपडेट करें
+                            </button>
+                            <button type="button" id="cancelEdit" style="flex:1;background:#666;color:#fff;font-weight:600;border:none;border-radius:6px;padding:12px;cursor:pointer;">
+                                ❌ रद्द करें
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="dashboard-section">
+                <div class="section-title"><i class="fas fa-user-circle"></i> Pandit Photo Management</div>
+                <div class="photo-upload-section">
+                    <div id="currentPanditsDisplay" style="margin-bottom:15px;">
+                        <!-- Current pandits will be displayed here -->
+                    </div>
+                    <label for="panditPhoto">Upload New Pandit Photo</label>
+                    <input type="file" id="panditPhoto" accept="image/*">
+                    <div class="photo-preview" id="photoPreview"></div>
+                    <input type="text" id="panditName" placeholder="Pandit Name" style="width:100%;margin-bottom:8px;padding:8px 10px;border-radius:6px;border:1px solid #ccc;">
+                    <input type="tel" id="panditPhone" placeholder="Phone Number (e.g. 9826773135)" style="width:100%;margin-bottom:8px;padding:8px 10px;border-radius:6px;border:1px solid #ccc;">
+                    <input type="text" id="panditExp" placeholder="Experience (e.g. 20+ years)" style="width:100%;margin-bottom:8px;padding:8px 10px;border-radius:6px;border:1px solid #ccc;">
+                    <input type="text" id="panditSpec" placeholder="Specialization (e.g. Vedic Puja)" style="width:100%;margin-bottom:8px;padding:8px 10px;border-radius:6px;border:1px solid #ccc;">
+                    <div style="display:flex;gap:8px;margin-top:10px;">
+                        <button id="addPanditBtn" style="flex:1;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;border:none;border-radius:6px;padding:8px 16px;font-weight:600;cursor:pointer;">
+                            Add Pandit
+                        </button>
+                        <button id="clearFormBtn" style="flex:1;background:#666;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-weight:600;cursor:pointer;">
+                            Clear Form
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Pandit Details Modal -->
+            <div id="editPanditModal" style="display:none;position:fixed;z-index:10000;left:0;top:0;width:100vw;height:100vh;background:rgba(34,0,51,0.85);align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:16px;max-width:500px;width:90vw;padding:32px 24px 24px 24px;box-shadow:0 12px 40px rgba(0,0,0,0.3);position:relative;">
+                    <button id="closeEditPanditModal" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.8rem;color:#ff8c00;cursor:pointer;">&times;</button>
+                    <h2 style="color:#ff8c00;text-align:center;margin-bottom:20px;font-size:1.4rem;">✏️ पंडित जी की जानकारी संपादित करें</h2>
+                    
+                    <form id="editPanditForm" style="display:flex;flex-direction:column;gap:12px;">
+                        <input type="hidden" id="editPanditIndex">
+                        <div>
+                            <label for="editPanditPhoto" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">फोटो बदलें</label>
+                            <input type="file" id="editPanditPhoto" accept="image/*" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">
+                            <div id="editPhotoPreview" style="margin-top:8px;text-align:center;"></div>
+                        </div>
+                        
+                        <div>
+                            <label for="editPanditName" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">पंडित जी का नाम</label>
+                            <input type="text" id="editPanditName" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div>
+                            <label for="editPanditPhone" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">फोन नंबर</label>
+                            <input type="tel" id="editPanditPhone" placeholder="जैसे: 9826773135" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div>
+                            <label for="editPanditExp" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">अनुभव</label>
+                            <input type="text" id="editPanditExp" placeholder="जैसे: 20+ वर्ष" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div>
+                            <label for="editPanditSpec" style="color:#2d0036;font-weight:600;display:block;margin-bottom:4px;">विशेषज्ञता</label>
+                            <input type="text" id="editPanditSpec" placeholder="जैसे: वैदिक पूजा" required style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;">
+                        </div>
+                        
+                        <div style="display:flex;gap:10px;margin-top:10px;">
+                            <button type="submit" style="flex:1;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:600;border:none;border-radius:6px;padding:12px;cursor:pointer;">
+                                💾 अपडेट करें
+                            </button>
+                            <button type="button" id="cancelEditPandit" style="flex:1;background:#666;color:#fff;font-weight:600;border:none;border-radius:6px;padding:12px;cursor:pointer;">
+                                ❌ रद्द करें
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="dashboard-section">
+                <div class="section-title"><i class="fas fa-calendar-check"></i> Booking Requests</div>
+                <div id="bookingRequestsTableWrap"></div>
+            </div>
+        `;
+        document.getElementById('logoutBtn').onclick = function() {
+            localStorage.removeItem(APP_KEY);
+            renderLogin();
+        };
+        // Change credentials logic
+        document.getElementById('changeCredForm').onsubmit = function(e) {
+            e.preventDefault();
+            const oldPass = document.getElementById('oldPassword').value;
+            const newUser = document.getElementById('newUsername').value.trim();
+            const newPass = document.getElementById('newPassword').value;
+            const cred = getAdminCred();
+            const msg = document.getElementById('credChangeMsg');
+            if (oldPass !== cred.password) {
+                msg.textContent = 'Current password is incorrect!';
+                msg.style.color = '#ff3b3b';
+                return;
+            }
+            if (!newUser || !newPass) {
+                msg.textContent = 'Username and password cannot be empty!';
+                msg.style.color = '#ff3b3b';
+                return;
+            }
+            setAdminCred(newUser, newPass);
+            msg.textContent = 'Username and password changed successfully!';
+            msg.style.color = '#00e676';
+            setTimeout(() => {
+                localStorage.removeItem(APP_KEY);
+                renderLogin();
+            }, 1200);
+        };
+        // Multiple Pandit Management Logic
+        const PANDIT_LIST_KEY = 'mahakal_pandit_list';
+        
+        function getPanditList() {
+            try {
+                return JSON.parse(localStorage.getItem(PANDIT_LIST_KEY)) || [];
+            } catch { return []; }
+        }
+        
+        function setPanditList(list) {
+            localStorage.setItem(PANDIT_LIST_KEY, JSON.stringify(list));
+        }
+        
+        function loadCurrentPanditsData() {
+            const pandits = getPanditList();
+            const displayDiv = document.getElementById('currentPanditsDisplay');
+            
+            if (pandits.length === 0) {
+                displayDiv.innerHTML = '<div style="text-align:center;color:#ccc;font-style:italic;">No pandits added yet.</div>';
+                return;
+            }
+            
+            let html = `<div style="margin-bottom:15px;"><div style="font-weight:600;color:#ff8c00;margin-bottom:10px;text-align:center;">Current Pandits (${pandits.length}):</div>`;
+            
+            pandits.forEach((pandit, index) => {
+                html += `
+                    <div class="pandit-item">
+                        <img src="${pandit.photo}" alt="Pandit Photo">
+                        <div class="pandit-info">
+                            <div><strong>Name:</strong> ${pandit.name || 'Not set'}</div>
+                            <div><strong>Experience:</strong> ${pandit.exp || 'Not set'}</div>
+                            <div><strong>Specialization:</strong> ${pandit.spec || 'Not set'}</div>
+                            <div><strong>Phone:</strong> ${pandit.phone || 'Not set'}</div>
+                        </div>
+                        <div class="pandit-actions">
+                            <button onclick="editPandit(${index})" class="edit-pandit-btn">Edit</button>
+                            <button onclick="deletePandit(${index})" class="delete-pandit-btn">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            displayDiv.innerHTML = html;
+        }
+        
+        // Migration function to handle old single pandit data
+        function migrateOldPanditData() {
+            try {
+                const oldPanditData = JSON.parse(localStorage.getItem('mahakal_pandit_photo'));
+                if (oldPanditData && oldPanditData.photo) {
+                    const pandits = getPanditList();
+                    // Only migrate if no pandits exist yet
+                    if (pandits.length === 0) {
+                        pandits.push(oldPanditData);
+                        setPanditList(pandits);
+                        // Remove old data
+                        localStorage.removeItem('mahakal_pandit_photo');
+                        console.log('Migrated old pandit data to new format');
+                    }
+                }
+            } catch (e) {
+                console.log('No old pandit data to migrate');
+            }
+        }
+        
+        // Load current data on page load
+        migrateOldPanditData();
+        loadCurrentPanditsData();
+        
+        // Photo upload and form handling
+        const photoInput = document.getElementById('panditPhoto');
+        const photoPreview = document.getElementById('photoPreview');
+        
+        photoInput.onchange = function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    photoPreview.innerHTML = `<img src="${evt.target.result}" alt="Pandit Photo" style="max-width:120px;max-height:120px;border-radius:50%;border:3px solid #ff8c00;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        
+        // Add pandit functionality
+        document.getElementById('addPanditBtn').onclick = function() {
+            const photoImg = photoPreview.querySelector('img');
+            const name = document.getElementById('panditName').value.trim();
+            const phone = document.getElementById('panditPhone').value.trim();
+            const exp = document.getElementById('panditExp').value.trim();
+            const spec = document.getElementById('panditSpec').value.trim();
+            
+            if (!photoImg) {
+                alert('Please select a photo first!');
+                return;
+            }
+            
+            if (!name || !phone || !exp || !spec) {
+                alert('Please fill all fields!');
+                return;
+            }
+            
+            const panditObj = {
+                photo: photoImg.src,
+                name: name,
+                phone: phone,
+                exp: exp,
+                spec: spec
+            };
+            
+            const pandits = getPanditList();
+            pandits.push(panditObj);
+            setPanditList(pandits);
+            
+            // Clear form
+            clearForm();
+            loadCurrentPanditsData();
+            
+            alert('Pandit added successfully!');
+        };
+        
+        // Clear form functionality
+        document.getElementById('clearFormBtn').onclick = function() {
+            clearForm();
+        };
+        
+        function clearForm() {
+            photoPreview.innerHTML = '';
+            photoInput.value = '';
+            document.getElementById('panditName').value = '';
+            document.getElementById('panditPhone').value = '';
+            document.getElementById('panditExp').value = '';
+            document.getElementById('panditSpec').value = '';
+        }
+        
+        // Edit pandit functionality
+        window.editPandit = function(index) {
+            const pandits = getPanditList();
+            const pandit = pandits[index];
+            
+            if (pandit) {
+                // Fill edit form with current data
+                document.getElementById('editPanditIndex').value = index;
+                document.getElementById('editPanditName').value = pandit.name || '';
+                document.getElementById('editPanditExp').value = pandit.exp || '';
+                document.getElementById('editPanditSpec').value = pandit.spec || '';
+                document.getElementById('editPanditPhone').value = pandit.phone || '';
+                
+                // Show current photo in edit preview
+                if (pandit.photo) {
+                    document.getElementById('editPhotoPreview').innerHTML = `
+                        <img src="${pandit.photo}" alt="Current Photo" style="max-width:80px;max-height:80px;border-radius:50%;border:2px solid #ff8c00;">
+                    `;
+                }
+                
+                // Show edit modal
+                document.getElementById('editPanditModal').style.display = 'flex';
+            }
+        };
+        
+        // Delete pandit functionality
+        window.deletePandit = function(index) {
+            if (confirm('Are you sure you want to delete this pandit?')) {
+                const pandits = getPanditList();
+                pandits.splice(index, 1);
+                setPanditList(pandits);
+                loadCurrentPanditsData();
+                alert('Pandit deleted successfully!');
+            }
+        };
+        
+        // Edit modal functionality
+        document.getElementById('closeEditPanditModal').onclick = function() {
+            document.getElementById('editPanditModal').style.display = 'none';
+        };
+        
+        document.getElementById('cancelEditPandit').onclick = function() {
+            document.getElementById('editPanditModal').style.display = 'none';
+        };
+        
+        document.getElementById('editPanditModal').onclick = function(e) {
+            if(e.target === this) this.style.display = 'none';
+        };
+        
+        // Handle photo change in edit modal
+        document.getElementById('editPanditPhoto').onchange = function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    document.getElementById('editPhotoPreview').innerHTML = `
+                        <img src="${evt.target.result}" alt="New Photo" style="max-width:80px;max-height:80px;border-radius:50%;border:2px solid #ff8c00;">
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        
+        // Handle edit form submission
+        document.getElementById('editPanditForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const index = parseInt(document.getElementById('editPanditIndex').value);
+            const pandits = getPanditList();
+            
+            if (index < 0 || index >= pandits.length) {
+                alert('Invalid pandit index!');
+                return;
+            }
+            
+            // Get new photo if uploaded
+            const editPhotoInput = document.getElementById('editPanditPhoto');
+            let newPhoto = pandits[index].photo; // Keep existing photo by default
+            
+            if (editPhotoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    updatePanditData(evt.target.result);
+                };
+                reader.readAsDataURL(editPhotoInput.files[0]);
+            } else {
+                updatePanditData(newPhoto);
+            }
+            
+            function updatePanditData(photoData) {
+                const updatedPanditObj = {
+                    photo: photoData,
+                    name: document.getElementById('editPanditName').value.trim(),
+                    exp: document.getElementById('editPanditExp').value.trim(),
+                    spec: document.getElementById('editPanditSpec').value.trim(),
+                    phone: document.getElementById('editPanditPhone').value.trim()
+                };
+                
+                pandits[index] = updatedPanditObj;
+                setPanditList(pandits);
+                
+                // Close modal and refresh display
+                document.getElementById('editPanditModal').style.display = 'none';
+                loadCurrentPanditsData();
+                
+                // Show success message
+                alert('पंडित जी की जानकारी सफलतापूर्वक अपडेट हो गई है!');
+            }
+        };
+        // Manage Pujas logic
+        const PUJA_LIST_KEY = 'mahakal_puja_list';
+        function getPujaList() {
+            try {
+                return JSON.parse(localStorage.getItem(PUJA_LIST_KEY)) || [];
+            } catch { return []; }
+        }
+        function setPujaList(list) {
+            localStorage.setItem(PUJA_LIST_KEY, JSON.stringify(list));
+        }
+        function renderPujaList() {
+            const list = getPujaList();
+            const tbody = document.getElementById('managePujaTableBody');
+            tbody.innerHTML = '';
+            if(list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#ccc;">No pujas added yet.</td></tr>`;
+                return;
+            }
+            list.forEach((puja, idx) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${puja.name}</td><td>${puja.desc}</td><td>₹${puja.price}</td><td>${puja.duration}</td><td>${puja.benefits}</td><td><button data-idx="${idx}" class="edit-puja-btn" style="background:#ff8c00;color:#2d0036;border:none;border-radius:5px;padding:4px 10px;cursor:pointer;margin-right:5px;">Edit</button><button data-idx="${idx}" class="delete-puja-btn" style="background:#ff3b3b;color:#fff;border:none;border-radius:5px;padding:4px 10px;cursor:pointer;">Delete</button></td>`;
+                tbody.appendChild(row);
+            });
+            // Attach delete events
+            Array.from(document.getElementsByClassName('delete-puja-btn')).forEach(btn => {
+                btn.onclick = function() {
+                    const idx = parseInt(this.getAttribute('data-idx'));
+                    const list = getPujaList();
+                    list.splice(idx,1);
+                    setPujaList(list);
+                    renderPujaList();
+                };
+            });
+            
+            // Attach edit events
+            Array.from(document.getElementsByClassName('edit-puja-btn')).forEach(btn => {
+                btn.onclick = function() {
+                    const idx = parseInt(this.getAttribute('data-idx'));
+                    const list = getPujaList();
+                    const puja = list[idx];
+                    
+                    // Fill edit form with current data
+                    document.getElementById('editPujaIndex').value = idx;
+                    document.getElementById('editPujaName').value = puja.name || '';
+                    document.getElementById('editPujaDesc').value = puja.desc || '';
+                    document.getElementById('editPujaPrice').value = puja.price || '';
+                    document.getElementById('editPujaDuration').value = puja.duration || '';
+                    document.getElementById('editPujaBenefits').value = puja.benefits || '';
+                    
+                    // Show edit modal
+                    document.getElementById('editPujaModal').style.display = 'flex';
+                };
+            });
+        }
+        
+        // Edit modal functionality
+        document.getElementById('closeEditModal').onclick = function() {
+            document.getElementById('editPujaModal').style.display = 'none';
+        };
+        
+        document.getElementById('cancelEdit').onclick = function() {
+            document.getElementById('editPujaModal').style.display = 'none';
+        };
+        
+        document.getElementById('editPujaModal').onclick = function(e) {
+            if(e.target === this) this.style.display = 'none';
+        };
+        
+        document.getElementById('editPujaForm').onsubmit = function(e) {
+            e.preventDefault();
+            const idx = parseInt(document.getElementById('editPujaIndex').value);
+            const list = getPujaList();
+            
+            // Update puja data
+            list[idx] = {
+                name: document.getElementById('editPujaName').value.trim(),
+                desc: document.getElementById('editPujaDesc').value.trim(),
+                price: Number(document.getElementById('editPujaPrice').value),
+                duration: document.getElementById('editPujaDuration').value.trim(),
+                benefits: document.getElementById('editPujaBenefits').value.trim()
+            };
+            
+            setPujaList(list);
+            renderPujaList();
+            document.getElementById('editPujaModal').style.display = 'none';
+            
+            // Show success message
+            alert('पूजा सफलतापूर्वक अपडेट हो गई है!');
+        };
+        document.getElementById('managePujaForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('managePujaName').value.trim();
+            const desc = document.getElementById('managePujaDesc').value.trim();
+            const price = document.getElementById('managePujaPrice').value.trim();
+            if(name && desc && price && !isNaN(price)) {
+                const list = getPujaList();
+                list.push({name, desc, price: Number(price)});
+                setPujaList(list);
+                renderPujaList();
+                document.getElementById('managePujaForm').reset();
+            }
+        };
+        renderPujaList();
+        renderBookingRequestsTable();
+    }
+
+
+
+
+    // On page load
+    if(localStorage.getItem(APP_KEY) === 'true') {
+        renderDashboard();
+    } else {
+        renderLogin();
+    }
+    </script>
+    <script>
+    function renderBookingRequestsTable() {
+        const wrap = document.getElementById('bookingRequestsTableWrap');
+        if (!wrap) return;
+        let bookings = [];
+        try {
+            bookings = JSON.parse(localStorage.getItem('mahakal_bookings')) || [];
+        } catch { bookings = []; }
+        if (!bookings.length) {
+            wrap.innerHTML = '<div style="color:#ccc;text-align:center;padding:18px;">No booking requests yet.</div>';
+            return;
+        }
+        let html = `<table style="width:100%;border-collapse:collapse;background:rgba(255,255,255,0.07);border-radius:10px;overflow:hidden;margin-bottom:18px;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Address</th>
+                    <th>Puja Name</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>`;
+        bookings.slice().reverse().forEach(b => {
+            html += `<tr>
+                <td>${b.userName || ''}</td>
+                <td>${b.userMobile || ''}</td>
+                <td>${b.userAddress || ''}</td>
+                <td>${b.pujaName || ''}</td>
+                <td>${b.pujaPrice ? '₹'+b.pujaPrice : ''}</td>
+                <td>${b.bookingDate || ''}</td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+        wrap.innerHTML = html;
+    }
+    </script>
+</body>
+</html> 
