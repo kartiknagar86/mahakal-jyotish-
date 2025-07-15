@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -674,8 +675,7 @@
     }
     document.addEventListener('DOMContentLoaded', function() {
         setDefaultPujasIfNone();
-        updatePujaListWithNewPujas(); // Add new pujas to existing list
-        
+        // updatePujaListWithNewPujas(); // Removed to prevent deleted pujas from reappearing
         var navBtn = document.getElementById('pujaBookingNavBtn');
         var pujaSection = document.getElementById('puja-list');
         if(navBtn && pujaSection) {
