@@ -167,13 +167,31 @@
             <h2 class="section-title lang-hindi">हमारे विशेषज्ञ</h2>
             <h2 class="section-title lang-english" style="display:none;">Our Experts</h2>
             <div class="pandit-grid">
-                <!-- Expert cards removed. Only dynamic cards (from localStorage) will appear here. -->
+                <!-- Static Pandit Card Example: Copy & Edit as Needed -->
+                <div class="pandit-card">
+                    <div class="pandit-photo">
+                        <img src="satish.jpg" alt="Pandit Satish Nagar" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;">
+                    </div>
+                    <h3>ज्योतिष आचार्य सतीश नागर (उज्जैन)</h3>
+                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9826773135" style="color:#ff8c00;text-decoration:none;">9826773135</a></p>
+                    <p class="experience">36 वर्षों का अनुभव</p>
+                    <p class="specialization">हटकेश्वर महाकाल ज्योतिष शोथ संस्थान कई वर्षों से सेवारत रहा है निस्वार्थ भाव। से सेवा करना हमारा कर्तव्य है। प्रार्थना करते हैं कि भगवान महाकाल आप की सारी मनोकामना पूर्ण करें राज नीति में उज्वल भविष्य एवं संतान प्राप्ति हेतु विशेष पूजन किये जाते हैं</p>
+                </div>
+                <!-- New Ashok Ji Pandit Card -->
+                <div class="pandit-card">
+                    <div class="pandit-photo">
+                        <img src="ashok.jpg" alt="Pandit Ashok Ji" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;">
+                    </div>
+                    <h3>यज्ञ आचार्य अशोक नागर (उज्जैन)</h3>
+                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9009048278" style="color:#ff8c00;text-decoration:none;">9826989685</a></p>
+                    <p class="experience">25 वर्षों का अनुभव</p>
+                    <p class="specialization">हजारों सफल यज्ञ व पूजा 🔸 हर यजमान की कुंडली और समस्या के अनुसार विशेष पूजा विधि तय करना 🔸 शुद्ध उच्चारण, मंत्र सिद्धि और परिपूर्ण विधि-विधान 🔸 गृह, कार्यालय, भूमि, वाहन, विवाह और स्वास्थ्य से जुड़ी हर बाधा का शांति पूजन</p>
+                </div>
+                <!-- Add more pandit-card blocks here as needed -->
             </div>
         </div>
     </section>
 
-
-    
     <script src="script.js"></script>
     <script>
     // Professional Puja List Display Logic
@@ -668,71 +686,6 @@
         }
     });
     </script>
-    <script>
-(function(){
-    // Show all uploaded pandit photos and details from localStorage
-    function loadPanditsFromStorage() {
-        var panditList = [];
-        try {
-            panditList = JSON.parse(localStorage.getItem('mahakal_pandit_list')) || [];
-        } catch (e) {
-            panditList = [];
-        }
-        
-        var grid = document.querySelector('.pandit-grid');
-        if(grid && panditList.length > 0) {
-            // Clear existing content
-            grid.innerHTML = '';
-            
-            // Add each pandit as a card
-            panditList.forEach(function(pandit) {
-                var card = document.createElement('div');
-                card.className = 'pandit-card';
-                let html = `<div class="pandit-photo"><img src="${pandit.photo}" alt="Pandit Photo" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;"></div>`;
-                if(pandit.name) html += `<h3>${pandit.name}</h3>`;
-                if(pandit.phone) html += `<p class="phone"><i class="fas fa-phone"></i> <a href="tel:${pandit.phone}" style="color:#ff8c00;text-decoration:none;">${pandit.phone}</a></p>`;
-                if(pandit.exp) html += `<p class="experience">${pandit.exp}</p>`;
-                if(pandit.spec) html += `<p class="specialization">${pandit.spec}</p>`;
-                card.innerHTML = html;
-                grid.appendChild(card);
-            });
-        } else if(grid) {
-            // Show default pandit when no pandits are added
-            grid.innerHTML = `
-                <div class="pandit-card">
-                    <div class="pandit-photo">
-                        <img src="satish.jpg" alt="Pandit Satish Nagar" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;">
-                    </div>
-                    <h3>यज्ञ आचार्य सतीश नागर जी</h3>
-                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9826773135" style="color:#ff8c00;text-decoration:none;">9826773135</a></p>
-                    <p class="experience">20+ वर्षों का अनुभव</p>
-                    <p class="specialization">वैदिक पूजा एवं ज्योतिष</p>
-                </div>
-                <div class="pandit-card">
-                    <div class="pandit-photo">
-                        <div style="width:100px;height:100px;border-radius:50%;border:3px solid #ff8c00;background:linear-gradient(135deg,#ff8c00,#fff200);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#2d0036;font-weight:bold;">🔱</div>
-                    </div>
-                    <h3>आचार्य जी</h3>
-                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9826989685" style="color:#ff8c00;text-decoration:none;">9826989685</a></p>
-                    <p class="experience">18+ वर्षों का अनुभव</p>
-                    <p class="specialization">कुंडली विश्लेषण</p>
-                </div>
-            `;
-        }
-    }
-    
-    // Load pandits on page load
-    loadPanditsFromStorage();
-    
-    // Listen for storage changes to update pandits in real-time
-    window.addEventListener('storage', function(e) {
-        if(e.key === 'mahakal_pandit_list') {
-            loadPanditsFromStorage();
-        }
-    });
-})();
-</script>
-
     <!-- Footer Section -->
     <footer class="footer" style="background:linear-gradient(135deg,#2d0036,#4a0066);color:#fff;padding:15px 0;margin-top:30px;">
         <div class="container">
