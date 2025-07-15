@@ -7,6 +7,26 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Firebase Config (added for puja booking) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+    <script>
+      // Firebase configuration for Mahakal Jyotish
+      const firebaseConfig = {
+        apiKey: "AIzaSyAjf9Dm7hVvbaTq927ydn-W7lb-Ye-idKo",
+        authDomain: "mahakal-jyotish.firebaseapp.com",
+        databaseURL: "https://mahakal-jyotish-default-rtdb.firebaseio.com",
+        projectId: "mahakal-jyotish",
+        storageBucket: "mahakal-jyotish.appspot.com",
+        messagingSenderId: "408597827940",
+        appId: "1:408597827940:web:98ddbff32e5fa1eec96a71",
+        measurementId: "G-N5JLDSQM20"
+      };
+      // Initialize Firebase only if not already initialized
+      if (!window.firebase || !firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+    </script>
 </head>
 <body>
     <!-- Header Section -->
@@ -690,15 +710,6 @@
                 </div>
                 <div class="pandit-card">
                     <div class="pandit-photo">
-                        <div style="width:100px;height:100px;border-radius:50%;border:3px solid #ff8c00;background:linear-gradient(135deg,#ff8c00,#fff200);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#2d0036;font-weight:bold;">🕉️</div>
-                    </div>
-                    <h3>पंडित जी</h3>
-                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:8305601004" style="color:#ff8c00;text-decoration:none;">8305601004</a></p>
-                    <p class="experience">15+ वर्षों का अनुभव</p>
-                    <p class="specialization">मंत्र जाप एवं हवन</p>
-                </div>
-                <div class="pandit-card">
-                    <div class="pandit-photo">
                         <div style="width:100px;height:100px;border-radius:50%;border:3px solid #ff8c00;background:linear-gradient(135deg,#ff8c00,#fff200);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#2d0036;font-weight:bold;">🔱</div>
                     </div>
                     <h3>आचार्य जी</h3>
@@ -746,5 +757,37 @@
             </div>
         </div>
     </footer>
+    <!-- Puja Booking Form Firebase Submission -->
+<script>
+// Puja Booking Form Firebase Submission
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('pujaBookingForm');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var userName = document.getElementById('userName').value.trim();
+        if (!userName) {
+          alert('कृपया नाम भरें');
+          return;
+        }
+        var bookingData = {
+          userName: userName,
+          timestamp: new Date().toISOString()
+        };
+        firebase.database().ref('pujaBookings').push(bookingData)
+          .then(function() {
+            alert('बुकिंग सफलतापूर्वक दर्ज हो गई!');
+            form.reset();
+          })
+          .catch(function(error) {
+            console.error('Firebase booking error:', error);
+            alert('बुकिंग में त्रुटि: ' + error.message);
+          });
+      });
+    }
+  });
+})();
+</script>
 </body>
 </html>

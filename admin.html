@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Mahakal Jyotish</title>
@@ -256,6 +257,26 @@
             }
         }
     </style>
+    <!-- Firebase Config (added for puja booking) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+<script>
+      // Firebase configuration for Mahakal Jyotish
+  const firebaseConfig = {
+        apiKey: "AIzaSyAjf9Dm7hVvbaTq927ydn-W7lb-Ye-idKo",
+        authDomain: "mahakal-jyotish.firebaseapp.com",
+        databaseURL: "https://mahakal-jyotish-default-rtdb.firebaseio.com",
+        projectId: "mahakal-jyotish",
+        storageBucket: "mahakal-jyotish.appspot.com",
+        messagingSenderId: "408597827940",
+        appId: "1:408597827940:web:98ddbff32e5fa1eec96a71",
+        measurementId: "G-N5JLDSQM20"
+  };
+      // Initialize Firebase only if not already initialized
+      if (!window.firebase || !firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+      }
+</script>
 </head>
 <body>
     <div class="admin-container" id="adminApp">
@@ -910,6 +931,6 @@
         html += '</tbody></table>';
         wrap.innerHTML = html;
     }
-    </script>
+</script>
 </body>
 </html> 
