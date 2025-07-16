@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -28,16 +27,128 @@
         firebase.initializeApp(firebaseConfig);
       }
     </script>
+    <style>
+    .location-btn-pro {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #fff;
+        color: #ff8c00;
+        border: 2px solid #ff8c00;
+        border-radius: 30px;
+        padding: 10px 18px 10px 13px;
+        font-size: 1.08rem;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(255,140,0,0.08);
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+        outline: none;
+        margin-left: 12px;
+        user-select: none;
+    }
+    .location-btn-pro:hover, .location-btn-pro:focus {
+        background: #fffbe7;
+        color: #d65a00;
+        box-shadow: 0 4px 16px rgba(255,140,0,0.13);
+        border-color: #d65a00;
+    }
+    .location-btn-pro .loc-text {
+        display: inline;
+    }
+    @media (max-width: 600px) {
+        .location-btn-pro {
+            padding: 9px 11px 9px 11px;
+            font-size: 1.1rem;
+        }
+        .location-btn-pro .loc-text {
+            display: none;
+        }
+    }
+    </style>
 </head>
 <body>
+    <!-- Language Switcher Section -->
+    <div style="text-align:center;padding:30px 0 20px 0; background:#fffbe7; z-index:9999; position:relative;display:flex;justify-content:center;align-items:center;gap:10px;">
+        <button id="langHindiBtn" style="background:#ff8c00;color:#fff;font-weight:600;border:none;border-radius:6px;padding:12px 28px;cursor:pointer;margin-right:8px;font-size:1.2rem;">हिन्दी</button>
+        <button id="langEnglishBtn" style="background:#fff200;color:#2d0036;font-weight:600;border:none;border-radius:6px;padding:12px 28px;cursor:pointer;font-size:1.2rem;">English</button>
+        <button id="locationBtn" class="location-btn-pro" title="Location" aria-label="Location">
+            <span style="display:inline-flex;align-items:center;justify-content:center;line-height:1;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
+                  <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.11 11.54 7.41 11.8.36.31.82.31 1.18 0C12.89 21.54 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 17.3C10.09 17.3 6 13.36 6 10c0-3.31 2.69-6 6-6s6 2.69 6 6c0 3.36-4.09 7.3-6 9.3z" fill="#ff3b3b"/>
+                  <circle cx="12" cy="10" r="3" fill="#fff"/>
+                  <circle cx="12" cy="10" r="2" fill="#ff8c00"/>
+                </svg>
+            </span>
+            <span class="loc-text">Location</span>
+        </button>
+    </div>
+    <script>
+    // Language Switcher Logic
+    function setLanguage(lang) {
+        console.log('Setting language to:', lang);
+        var hindiEls = document.querySelectorAll('.lang-hindi');
+        var engEls = document.querySelectorAll('.lang-english');
+        console.log('Found Hindi elements:', hindiEls.length);
+        console.log('Found English elements:', engEls.length);
+        
+        // Update button styles to show active state
+        var hindiBtn = document.getElementById('langHindiBtn');
+        var englishBtn = document.getElementById('langEnglishBtn');
+        
+        if(lang === 'en') {
+            hindiEls.forEach(function(el){ el.style.display = 'none'; });
+            engEls.forEach(function(el){ el.style.display = ''; });
+            // English button active
+            hindiBtn.style.background = '#fff200';
+            hindiBtn.style.color = '#2d0036';
+            englishBtn.style.background = '#ff8c00';
+            englishBtn.style.color = '#fff';
+        } else {
+            hindiEls.forEach(function(el){ el.style.display = ''; });
+            engEls.forEach(function(el){ el.style.display = 'none'; });
+            // Hindi button active
+            hindiBtn.style.background = '#ff8c00';
+            hindiBtn.style.color = '#fff';
+            englishBtn.style.background = '#fff200';
+            englishBtn.style.color = '#2d0036';
+        }
+        localStorage.setItem('mahakal_lang', lang);
+        
+        // Always re-render puja list when language changes
+        setTimeout(function() {
+            renderPujaList();
+        }, 100);
+    }
+    document.getElementById('langHindiBtn').onclick = function(){ setLanguage('hi'); };
+    document.getElementById('langEnglishBtn').onclick = function(){ setLanguage('en'); };
+    // On load, set language from localStorage or default to Hindi
+    document.addEventListener('DOMContentLoaded', function(){
+        var lang = localStorage.getItem('mahakal_lang') || 'hi';
+        setLanguage(lang);
+    });
+    </script>
+    <script>
+    // Location button click handler
+    document.addEventListener('DOMContentLoaded', function() {
+        var locationBtn = document.getElementById('locationBtn');
+        if(locationBtn) {
+            locationBtn.onclick = function() {
+                window.open('https://maps.app.goo.gl/N6A2fHh9idQ4qifH7', '_blank'); // User's home location
+            };
+        }
+    });
+    </script>
     <!-- Header Section -->
     <header class="header" style="position:relative;">
         <div class="container">
             <div class="header-content" style="text-align:center;">
                 <div class="trishul-icon">🔱</div>
-                <h1 class="main-title">महाकाल ज्योतिष</h1>
-                <h2 class="subtitle">महाकाल ज्योतिष शोथ संस्था एवं वैदिक पूजा स्थान</h2>
-                <p class="tagline">उज्जैन की महाकाल की पावन धरा ओर शिप्रा तट पर वैदिक पद्धति से सर्व कर्म पूजा पाठ संपन्न किए जाते है</p>
+                <h1 class="main-title lang-hindi">महाकाल ज्योतिष</h1>
+                <h1 class="main-title lang-english" style="display:none;">Mahakal Jyotish</h1>
+                <h2 class="subtitle lang-hindi">महाकाल ज्योतिष शोथ संस्था एवं वैदिक पूजा स्थान</h2>
+                <h2 class="subtitle lang-english" style="display:none;">Mahakal Jyotish Research Institute & Vedic Puja Center</h2>
+                <p class="tagline lang-hindi">उज्जैन की महाकाल की पावन धरा ओर शिप्रा तट पर वैदिक पद्धति से सर्व कर्म पूजा पाठ संपन्न किए जाते है</p>
+                <p class="tagline lang-english" style="display:none;">On the holy land of Mahakal, Ujjain, all rituals are performed by Vedic method on the banks of Shipra.</p>
             </div>
         </div>
     </header>
@@ -58,13 +169,34 @@
 
     <!-- Add a nav or button for Puja Booking if not present -->
     <nav class="main-nav" style="text-align:center;margin-top:18px;">
-        <button id="pujaBookingNavBtn" style="background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:10px 28px;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,0.13);cursor:pointer;">
+        <button id="pujaBookingNavBtn" class="lang-hindi" style="background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:10px 28px;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,0.13);cursor:pointer;">
             <span style="font-size:1.2em;">📿</span> पूजा बुकिंग
+        </button>
+        <button id="pujaBookingNavBtnEn" class="lang-english" style="display:none;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;font-weight:700;border:none;border-radius:8px;padding:10px 28px;font-size:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,0.13);cursor:pointer;">
+            <span style="font-size:1.2em;">📿</span> Puja Booking
         </button>
     </nav>
 
     <!-- Puja List Section (hidden by default) -->
-    <section id="puja-list" style="display:none;max-width:900px;margin:32px auto 0 auto;padding:0 10px;"></section>
+    <section id="puja-list" style="display:none;max-width:900px;margin:32px auto 0 auto;padding:0 10px;">
+        <div class="lang-hindi" style="background:rgba(255,255,255,0.05);border-radius:15px;padding:25px;margin-bottom:20px;">
+            <h2 style="color:#ff8c00;text-align:center;margin-bottom:20px;font-size:1.8rem;">
+                <span style="font-size:1.5em;">🕉️</span> पूजा बुकिंग सेवाएं
+            </h2>
+            <p style="text-align:center;color:#fff;margin-bottom:25px;font-size:1.1rem;">
+                हमारे विशेषज्ञ पंडितों द्वारा वैदिक विधि से पूजा संपन्न
+            </p>
+        </div>
+        <div class="lang-english" style="display:none;background:rgba(255,255,255,0.05);border-radius:15px;padding:25px;margin-bottom:20px;">
+            <h2 style="color:#ff8c00;text-align:center;margin-bottom:20px;font-size:1.8rem;">
+                <span style="font-size:1.5em;">🕉️</span> Puja Booking Services
+            </h2>
+            <p style="text-align:center;color:#fff;margin-bottom:25px;font-size:1.1rem;">
+                Vedic pujas performed by our expert priests
+            </p>
+        </div>
+        <!-- Puja cards will be rendered here by JS -->
+    </section>
 
     <!-- Puja Booking Modal -->
     <div id="pujaBookingModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(34,0,51,0.75);align-items:center;justify-content:center;">
@@ -173,20 +305,28 @@
                     <div class="pandit-photo">
                         <img src="satish.jpg" alt="Pandit Satish Nagar" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;">
                     </div>
-                    <h3>ज्योतिष आचार्य सतीश नागर (उज्जैन)</h3>
-                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9826773135" style="color:#ff8c00;text-decoration:none;">9826773135</a></p>
-                    <p class="experience">36 वर्षों का अनुभव</p>
-                    <p class="specialization">हटकेश्वर महाकाल ज्योतिष शोथ संस्थान कई वर्षों से सेवारत रहा है निस्वार्थ भाव। से सेवा करना हमारा कर्तव्य है। प्रार्थना करते हैं कि भगवान महाकाल आप की सारी मनोकामना पूर्ण करें राज नीति में उज्वल भविष्य एवं संतान प्राप्ति हेतु विशेष पूजन किये जाते हैं</p>
+                    <h3 class="lang-hindi">ज्योतिष आचार्य सतीश नागर (उज्जैन)</h3>
+                    <h3 class="lang-english" style="display:none;">Astrologer Acharya Satish Nagar (Ujjain)</h3>
+                    <p class="phone lang-hindi"><i class="fas fa-phone"></i> <a href="tel:9826773135" style="color:#ff8c00;text-decoration:none;">9826773135</a></p>
+                    <p class="phone lang-english" style="display:none;"><i class="fas fa-phone"></i> <a href="tel:9826773135" style="color:#ff8c00;text-decoration:none;">9826773135</a></p>
+                    <p class="experience lang-hindi">36 वर्षों का अनुभव</p>
+                    <p class="experience lang-english" style="display:none;">36 years of experience</p>
+                    <p class="specialization lang-hindi">हाटकेश्वर महाकाल ज्योतिष शोथ संस्थान कई वर्षों से सेवारत रहा है निस्वार्थ भाव। से सेवा करना हमारा कर्तव्य है। प्रार्थना करते हैं कि भगवान महाकाल आप की सारी मनोकामना पूर्ण करें राज नीति में उज्वल भविष्य एवं संतान प्राप्ति हेतु विशेष पूजन किये जाते हैं</p>
+                    <p class="specialization lang-english" style="display:none;">Hatkeshwar Mahakal Jyotish Shodh Sansthan has been serving selflessly for many years. It is our duty to serve. We pray that Lord Mahakal fulfills all your wishes. Special prayers are done for a bright future in politics and to get children.</p>
                 </div>
                 <!-- New Ashok Ji Pandit Card -->
                 <div class="pandit-card">
                     <div class="pandit-photo">
                         <img src="ashok.jpg" alt="Pandit Ashok Ji" style="max-width:100px;max-height:100px;border-radius:50%;border:3px solid #ff8c00;box-shadow:0 2px 8px rgba(0,0,0,0.15);background:#fff;object-fit:cover;">
                     </div>
-                    <h3>यज्ञ आचार्य अशोक नागर (उज्जैन)</h3>
-                    <p class="phone"><i class="fas fa-phone"></i> <a href="tel:9009048278" style="color:#ff8c00;text-decoration:none;">9826989685</a></p>
-                    <p class="experience">25 वर्षों का अनुभव</p>
-                    <p class="specialization">हजारों सफल यज्ञ व पूजा 🔸 हर यजमान की कुंडली और समस्या के अनुसार विशेष पूजा विधि तय करना 🔸 शुद्ध उच्चारण, मंत्र सिद्धि और परिपूर्ण विधि-विधान 🔸 गृह, कार्यालय, भूमि, वाहन, विवाह और स्वास्थ्य से जुड़ी हर बाधा का शांति पूजन</p>
+                    <h3 class="lang-hindi">यज्ञ आचार्य अशोक नागर (उज्जैन)</h3>
+                    <h3 class="lang-english" style="display:none;">Yagya Acharya Ashok Nagar (Ujjain)</h3>
+                    <p class="phone lang-hindi"><i class="fas fa-phone"></i> <a href="tel:9826989685" style="color:#ff8c00;text-decoration:none;">9826989685</a></p>
+                    <p class="phone lang-english" style="display:none;"><i class="fas fa-phone"></i> <a href="tel:9826989685" style="color:#ff8c00;text-decoration:none;">9826989685</a></p>
+                    <p class="experience lang-hindi">25 वर्षों का अनुभव</p>
+                    <p class="experience lang-english" style="display:none;">25 years experience</p>
+                    <p class="specialization lang-hindi">हजारों सफल यज्ञ व पूजा 🔸 हर यजमान की कुंडली और समस्या के अनुसार विशेष पूजा विधि तय करना 🔸 शुद्ध उच्चारण, मंत्र सिद्धि और परिपूर्ण विधि-विधान 🔸 गृह, कार्यालय, भूमि, वाहन, विवाह और स्वास्थ्य से जुड़ी हर बाधा का शांति पूजन</p>
+                    <p class="specialization lang-english" style="display:none;">Thousands of successful yagnas and pujas 🔸 Deciding special puja method according to the horoscope and problem of each yajaman 🔸 Pure pronunciation, mantra siddhi and perfect rituals 🔸 Shanti pujan for every obstacle related to home, office, land, vehicle, marriage and health</p>
                 </div>
                 <!-- Add more pandit-card blocks here as needed -->
             </div>
@@ -213,150 +353,234 @@
             var defaultPujas = [
                 { 
                     name: 'रुद्राभिषेक (Rudrabhishek)', 
+                    name_en: 'Rudrabhishek',
                     desc: 'भगवान शिव की कृपा प्राप्ति के लिए विशेष पूजा। मंगल कार्यों में सफलता और शांति प्रदान करता है।', 
+                    desc_en: 'Special puja for Lord Shiva\'s blessings. Provides success and peace in auspicious works.',
                     price: 2501,
                     duration: '1-2 घंटे',
-                    benefits: 'करियर सफलता, मानसिक शांति, शिव कृपा'
+                    duration_en: '1-2 hours',
+                    benefits: 'करियर सफलता, मानसिक शांति, शिव कृपा',
+                    benefits_en: 'Career success, mental peace, Shiva\'s blessings'
                 },
                 { 
                     name: 'महामृत्युंजय जाप (Mahamrityunjaya)', 
+                    name_en: 'Mahamrityunjaya Jaap',
                     desc: 'दीर्घायु और आरोग्य के लिए महामृत्युंजय मंत्र का विशेष जाप। रोगों से मुक्ति और स्वास्थ्य लाभ।', 
+                    desc_en: 'Special chanting of Mahamrityunjaya mantra for longevity and health. Freedom from diseases and health benefits.',
                     price: 5101,
                     duration: '3-4 घंटे',
-                    benefits: 'दीर्घायु, स्वास्थ्य लाभ, रोग निवारण'
+                    duration_en: '3-4 hours',
+                    benefits: 'दीर्घायु, स्वास्थ्य लाभ, रोग निवारण',
+                    benefits_en: 'Longevity, health benefits, disease removal'
                 },
                 { 
                     name: 'नवग्रह शांति (Navgraha Shanti)', 
+                    name_en: 'Navgraha Shanti',
                     desc: '9 ग्रह मंदिर पे 9 ग्रह शांति। राहु केतु सूर्य मंगल बुद्ध गुरु शुक्र और शरीर सभी के जाप आदि वैदिक पद्धति से किए जाते हैं एवं दशांश हवन भी किया जाता है', 
+                    desc_en: '9 planet peace at 9 planet temple. Chanting of Rahu, Ketu, Sun, Mars, Mercury, Jupiter, Venus and Saturn is done by Vedic method and Dashansh Havan is also performed',
                     price: 3101,
                     duration: '2 घंटे',
-                    benefits: 'ग्रह दोष निवारण, जीवन सुख, शांति'
+                    duration_en: '2 hours',
+                    benefits: 'ग्रह दोष निवारण, जीवन सुख, शांति',
+                    benefits_en: 'Planet defect removal, life happiness, peace'
                 },
                 { 
                     name: 'विवाह मंगल (Vivah Mangal)', 
+                    name_en: 'Vivah Mangal',
                     desc: 'विवाह के लिए विशेष मंगल पूजा एवं अंगारक वैवाहिक जीवन में सुख-शांति और सफलता प्रदान करता है।', 
+                    desc_en: 'Special Mangal puja for marriage and Angarak provides happiness, peace and success in married life.',
                     price: 2500,
                     duration: '2 घंटे',
-                    benefits: 'वैवाहिक सुख, परिवार शांति, मंगल कार्य'
+                    duration_en: '2 hours',
+                    benefits: 'वैवाहिक सुख, परिवार शांति, मंगल कार्य',
+                    benefits_en: 'Marital happiness, family peace, auspicious work'
                 },
                 { 
                     name: 'गणेश पूजा (Ganesh Puja)', 
+                    name_en: 'Ganesh Puja',
                     desc: 'सभी कार्यों में सफलता के लिए गणेश जी की विशेष पूजा। विघ्न निवारण और सफलता प्राप्ति।', 
+                    desc_en: 'Special puja of Lord Ganesh for success in all works. Obstacle removal and success attainment.',
                     price: 1200,
                     duration: '1.5-2 घंटे',
-                    benefits: 'विघ्न निवारण, सफलता, नई शुरुआत'
+                    duration_en: '1.5-2 hours',
+                    benefits: 'विघ्न निवारण, सफलता, नई शुरुआत',
+                    benefits_en: 'Obstacle removal, success, new beginning'
                 },
                 { 
                     name: 'पितृ पूजन (Pitru Pujan)', 
+                    name_en: 'Pitru Pujan',
                     desc: 'पितरों के निमित्त तिलपिण्डी श्राद्ध सोला पिंड श्राद पलास विधि नागवली नारायण वली। गीताजी के पाठ भागवत के मूलपाठ तर्पण ब्राह्मण भोजन आपके पितरों को मोक्ष की प्राप्ति के लिए स। ह विधि सम्पन्न किए जाते है मा। सिप्रा सिद्धवट घाट पर।', 
+                    desc_en: 'Tilpindi Shraddha, Sola Pind Shradd, Palas Vidhi, Nagavali, Narayan Bali for ancestors. Gita reading, Bhagwat reading, Tarpana, Brahmin food - all rituals are performed for your ancestors\' salvation at Shipra Siddhavat Ghat.',
                     price: 3100,
                     duration: '4-5 घंटे',
-                    benefits: 'पितृ दोष निवारण, पितरों को मोक्ष, कुल शांति'
+                    duration_en: '4-5 hours',
+                    benefits: 'पितृ दोष निवारण, पितरों को मोक्ष, कुल शांति',
+                    benefits_en: 'Ancestor defect removal, salvation for ancestors, family peace'
                 },
                 { 
                     name: 'सत्यनारायण कथा (Satyanarayan Katha)', 
+                    name_en: 'Satyanarayan Katha',
                     desc: 'भगवान विष्णु की कथा के साथ विशेष पूजा। परिवार में सुख-शांति और समृद्धि प्रदान करता है।', 
+                    desc_en: 'Special puja with Lord Vishnu\'s story. Provides happiness, peace and prosperity in family.',
                     price: 1500,
                     duration: '2 घंटे',
-                    benefits: 'परिवार शांति, समृद्धि, मंगल कार्य'
+                    duration_en: '2 hours',
+                    benefits: 'परिवार शांति, समृद्धि, मंगल कार्य',
+                    benefits_en: 'Family peace, prosperity, auspicious work'
                 },
                 { 
                     name: 'हवन यज्ञ (Havan Yagya)', 
+                    name_en: 'Havan Yagya',
                     desc: 'वैदिक मंत्रों के साथ विशेष हवन यज्ञ। वातावरण शुद्धि और सकारात्मक ऊर्जा प्रदान करता है।', 
+                    desc_en: 'Special Havan Yagya with Vedic mantras. Provides environment purification and positive energy.',
                     price: 5001,
                     duration: '2-3 घंटे',
-                    benefits: 'वातावरण शुद्धि, सकारात्मक ऊर्जा, शांति'
+                    duration_en: '2-3 hours',
+                    benefits: 'वातावरण शुद्धि, सकारात्मक ऊर्जा, शांति',
+                    benefits_en: 'Environment purification, positive energy, peace'
                 },
                 { 
                     name: 'कालसर्प दोष शांति (Kaal Sarp Dosh Shanti)', 
+                    name_en: 'Kaal Sarp Dosh Shanti',
                     desc: 'कालसर्प दोष निवारण के लिए विशेष पूजा। राहु-केतु के दोष से मुक्ति प्रदान करता है।', 
+                    desc_en: 'Special puja for Kaal Sarp Dosh removal. Provides relief from Rahu-Ketu dosh.',
                     price: 2600,
                     duration: '2-3 घंटे',
-                    benefits: 'कालसर्प दोष निवारण, राहु-केतु शांति'
+                    duration_en: '2-3 hours',
+                    benefits: 'कालसर्प दोष निवारण, राहु-केतु शांति',
+                    benefits_en: 'Kaal Sarp dosh removal, Rahu-Ketu peace'
                 },
                 { 
                     name: 'मंगल दोष शांति (Mangal Dosh Shanti)', 
+                    name_en: 'Mangal Dosh Shanti',
                     desc: 'जन्म कुंडली मंगल दोष निवारण हेतु मंगल भात पूजन अंगारक। पूजन कर्कश पूजन विष दोष पूजन गुरु चांडाल पूजन ग्रहण पूजन अमावस्या। दोष पूजन कोरस पूजन आदि सभी ग्रहों के जाप सभी ग्रहों के अभिषेक सह।विधि सम्पन्न किये जाते है', 
+                    desc_en: 'Special puja for Mangal dosh removal in birth chart. Includes various rituals and chanting for all planets.',
                     price: 3100,
                     duration: '2-3 घंटे',
-                    benefits: 'मंगल दोष निवारण, वैवाहिक शांति'
+                    duration_en: '2-3 hours',
+                    benefits: 'मंगल दोष निवारण, वैवाहिक शांति',
+                    benefits_en: 'Mangal dosh removal, marital peace'
                 },
                 { 
                     name: 'शनि दोष शांति (Shani Dosh Shanti)', 
+                    name_en: 'Shani Dosh Shanti',
                     desc: 'शनि ग्रह के दोष निवारण के लिए विशेष पूजा। शनि की कृपा और सफलता प्रदान करता है।', 
+                    desc_en: 'Special puja for Shani dosh removal. Brings Shani\'s blessings and success.',
                     price: 3200,
                     duration: '3-5 घंटे',
-                    benefits: 'शनि दोष निवारण, सफलता, शांति'
+                    duration_en: '3-5 hours',
+                    benefits: 'शनि दोष निवारण, सफलता, शांति',
+                    benefits_en: 'Shani dosh removal, success, peace'
                 },
                 { 
                     name: 'ग्रह प्रवेश पूजा (Graha Pravesh Puja)', 
+                    name_en: 'Graha Pravesh Puja',
                     desc: 'नए घर में प्रवेश के लिए विशेष पूजा। घर में सुख-शांति और समृद्धि प्रदान करता है।', 
+                    desc_en: 'Special puja for entering a new house. Brings peace and prosperity to the home.',
                     price: 1800,
                     duration: '2-2.5 घंटे',
-                    benefits: 'घर में शांति, समृद्धि, सुख'
+                    duration_en: '2-2.5 hours',
+                    benefits: 'घर में शांति, समृद्धि, सुख',
+                    benefits_en: 'Home peace, prosperity, happiness'
                 },
                 { 
                     name: 'वास्तु शांति पूजा (Vastu Shanti Puja)', 
+                    name_en: 'Vastu Shanti Puja',
                     desc: 'वास्तु दोष निवारण के लिए विशेष पूजा। घर के वास्तु दोष को दूर करता है।', 
+                    desc_en: 'Special puja for Vastu dosh removal. Removes Vastu defects from the house.',
                     price: 2400,
                     duration: '2.5-3 घंटे',
-                    benefits: 'वास्तु दोष निवारण, घर में शांति'
+                    duration_en: '2.5-3 hours',
+                    benefits: 'वास्तु दोष निवारण, घर में शांति',
+                    benefits_en: 'Vastu dosh removal, home peace'
                 },
                 { 
                     name: 'सरस्वती पूजा (Saraswati Puja)', 
+                    name_en: 'Saraswati Puja',
                     desc: 'मां सरस्वती की विशेष पूजा। ज्ञान, विद्या और बुद्धि प्राप्ति के लिए।', 
+                    desc_en: 'Special puja for Goddess Saraswati. For knowledge, wisdom and intellect.',
                     price: 1600,
                     duration: '2-2.5 घंटे',
-                    benefits: 'ज्ञान प्राप्ति, बुद्धि वृद्धि, विद्या लाभ'
+                    duration_en: '2-2.5 hours',
+                    benefits: 'ज्ञान प्राप्ति, बुद्धि वृद्धि, विद्या लाभ',
+                    benefits_en: 'Knowledge, wisdom, education benefits'
                 },
                 { 
                     name: 'लक्ष्मी पूजा (Lakshmi Puja)', 
+                    name_en: 'Lakshmi Puja',
                     desc: 'मां लक्ष्मी की विशेष पूजा। धन-धान्य और समृद्धि प्राप्ति के लिए।', 
+                    desc_en: 'Special puja for Goddess Lakshmi. For wealth and prosperity.',
                     price: 1900,
                     duration: '2-2.5 घंटे',
-                    benefits: 'धन लाभ, समृद्धि, आर्थिक सफलता'
+                    duration_en: '2-2.5 hours',
+                    benefits: 'धन लाभ, समृद्धि, आर्थिक सफलता',
+                    benefits_en: 'Wealth, prosperity, financial success'
                 },
                 { 
                     name: 'दुर्गा पूजा (Durga Puja)', 
+                    name_en: 'Durga Puja',
                     desc: 'माँ जगदंबिका हरसिद्धि माता गढ़ कालिका माता। की कृपा के लिए दुर्गा सप्तशती के पाठ? नौचंदी पाठ सच चंडी पाठ वैदिक गुरुकुल। के ब्राह्मणों के द्वारा सम्पन्न कराए जाते हैं जिससे कुल देवी दोस घर की सारी दुख दरिद्राग सत्ता को दूर करने के उपाय किए जाते हैं। माताजी का अभिषेक और हवन भी किया जाता है। मां बगलामुखी के जाप अनुष्ठान भी किए जाते', 
+                    desc_en: 'Special puja for blessings of Goddess Durga, Harshiddhi Mata, Garh Kalika Mata. Includes Durga Saptashati, Chandi Path, rituals for family peace and removal of obstacles. Abhishek and Havan also performed.',
                     price: 11000,
                     duration: '3-3.5 घंटे',
-                    benefits: 'शक्ति प्राप्ति, बाधा निवारण, सुरक्षा'
+                    duration_en: '3-3.5 hours',
+                    benefits: 'शक्ति प्राप्ति, बाधा निवारण, सुरक्षा',
+                    benefits_en: 'Power, obstacle removal, protection'
                 },
                 { 
                     name: 'हनुमान पूजा (Hanuman Puja)', 
+                    name_en: 'Hanuman Puja',
                     desc: 'हनुमान जी की विशेष पूजा। शक्ति, साहस और भक्ति प्राप्ति के लिए।', 
+                    desc_en: 'Special puja for Lord Hanuman. For strength, courage and devotion.',
                     price: 2100,
                     duration: '1.5-2 घंटे',
-                    benefits: 'शक्ति प्राप्ति, साहस, भक्ति'
+                    duration_en: '1.5-2 hours',
+                    benefits: 'शक्ति प्राप्ति, साहस, भक्ति',
+                    benefits_en: 'Strength, courage, devotion'
                 },
                 { 
                     name: 'पितरों के लिए भोजन (Pitro ke liye bhojan)', 
+                    name_en: 'Food for Ancestors',
                     desc: 'ब्राह्मण बटुक भोजन एवं दान की व्यवस्था ओर गोशाला में गो की सेवा पितरों को मोक्ष प्राप्ति के लिए एक ब्राह्मण भोजन', 
+                    desc_en: 'Brahmin Batuk food and donation arrangement, cow service in cowshed for ancestors\' salvation.',
                     price: 151,
                     duration: '3 घंटे',
-                    benefits: 'पितरों की आत्मा तृप्ति'
+                    duration_en: '3 hours',
+                    benefits: 'पितरों की आत्मा तृप्ति',
+                    benefits_en: 'Ancestor\'s soul satisfaction'
                 },
                 { 
                     name: 'कृष्ण पूजा (Krishna Puja)', 
+                    name_en: 'Krishna Puja',
                     desc: 'भगवान कृष्ण की विशेष पूजा। प्रेम, ज्ञान और आनंद की प्राप्ति के लिए।', 
+                    desc_en: 'Special puja for Lord Krishna. For love, knowledge and bliss.',
                     price: 2100,
                     duration: '2 घंटे',
-                    benefits: 'प्रेम प्राप्ति, ज्ञान, आनंद'
+                    duration_en: '2 hours',
+                    benefits: 'प्रेम प्राप्ति, ज्ञान, आनंद',
+                    benefits_en: 'Love, knowledge, bliss'
                 },
                 { 
                     name: 'शिव पार्थिव पूजा (Parthiv Puja)', 
+                    name_en: 'Parthiv Puja',
                     desc: 'भगवान शिव और मां पार्वती की संयुक्त पूजा। वैवाहिक सुख और शांति प्राप्ति के लिए।', 
+                    desc_en: 'Joint puja of Lord Shiva and Goddess Parvati. For marital happiness and peace.',
                     price: 3100,
                     duration: '3 घंटे',
-                    benefits: 'वैवाहिक सुख, शांति, प्रेम'
+                    duration_en: '3 hours',
+                    benefits: 'वैवाहिक सुख, शांति, प्रेम',
+                    benefits_en: 'Marital happiness, peace, love'
                 },
                 { 
                     name: 'गुरु पूजा (Guru Puja)', 
+                    name_en: 'Guru Puja',
                     desc: 'गुरु की विशेष पूजा। ज्ञान, मार्गदर्शन और आध्यात्मिक प्रगति के लिए।', 
+                    desc_en: 'Special puja for Guru. For knowledge, guidance and spiritual progress.',
                     price: 1700,
                     duration: '2-2.5 घंटे',
-                    benefits: 'ज्ञान प्राप्ति, मार्गदर्शन, आध्यात्मिक लाभ'
+                    duration_en: '2-2.5 hours',
+                    benefits: 'ज्ञान प्राप्ति, मार्गदर्शन, आध्यात्मिक लाभ',
+                    benefits_en: 'Knowledge, guidance, spiritual benefit'
                 }
                 
                   
@@ -501,44 +725,56 @@
     }
     
     function renderPujaList() {
+        console.log('Rendering puja list...');
         var list = getPujaList();
         var container = document.getElementById('puja-list');
-        if (!container) return;
+        if (!container) {
+            console.log('Puja list container not found');
+            return;
+        }
         if (list.length === 0) {
             container.innerHTML = '<div style="color:#ccc;text-align:center;padding:40px;font-size:1.1rem;">कोई पूजा उपलब्ध नहीं है।</div>';
             return;
         }
-        var html = `
-            <div style="background:rgba(255,255,255,0.05);border-radius:15px;padding:25px;margin-bottom:20px;">
-                <h2 style="color:#ff8c00;text-align:center;margin-bottom:20px;font-size:1.8rem;">
-                    <span style="font-size:1.5em;">🕉️</span> पूजा बुकिंग सेवाएं
-                </h2>
-                <p style="text-align:center;color:#fff;margin-bottom:25px;font-size:1.1rem;">
-                    हमारे विशेषज्ञ पंडितों द्वारा वैदिक विधि से पूजा संपन्न
-                </p>
-            </div>
-            <div class="puja-list-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;">
-        `;
+        
+        console.log('Found', list.length, 'pujas');
+        if(list.length > 0) {
+            console.log('First puja has English fields:', {
+                name_en: list[0].name_en,
+                desc_en: list[0].desc_en,
+                duration_en: list[0].duration_en,
+                benefits_en: list[0].benefits_en
+            });
+        }
+        
+        var html = '';
+        html += '<div class="puja-list-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;">';
         list.forEach(function(puja, index) {
             html += `
                 <div class="puja-card" style="background:rgba(255,255,255,0.08);border-radius:12px;padding:20px;border:1px solid rgba(255,140,0,0.3);transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 8px 25px rgba(255,140,0,0.2)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
                     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:15px;">
-                        <h3 style="color:#ff8c00;font-size:1.3rem;margin:0;font-weight:600;">${puja.name}</h3>
+                        <h3 class="lang-hindi" style="color:#ff8c00;font-size:1.3rem;margin:0;font-weight:600;">${puja.name || ''}</h3>
+                        <h3 class="lang-english" style="display:none;color:#ff8c00;font-size:1.3rem;margin:0;font-weight:600;">${puja.name_en || puja.name || ''}</h3>
                         <span style="background:linear-gradient(90deg,#ff8c00,#fff200);color:#2d0036;padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.9rem;">₹${puja.price}</span>
                     </div>
-                    <p style="color:#fff;margin-bottom:15px;line-height:1.6;font-size:0.95rem;">${puja.desc}</p>
+                    <p class="lang-hindi" style="color:#fff;margin-bottom:15px;line-height:1.6;font-size:0.95rem;">${puja.desc || ''}</p>
+                    <p class="lang-english" style="display:none;color:#fff;margin-bottom:15px;line-height:1.6;font-size:0.95rem;">${puja.desc_en || puja.desc || ''}</p>
                     <div style="display:flex;justify-content:space-between;margin-bottom:15px;font-size:0.9rem;">
-                        <span style="color:#ff8c00;"><i class="fas fa-clock"></i> ${puja.duration}</span>
-                        <span style="color:#fff200;"><i class="fas fa-star"></i> लाभ: ${puja.benefits}</span>
+                        <span class="lang-hindi" style="color:#ff8c00;"><i class="fas fa-clock"></i> ${puja.duration || ''}</span>
+                        <span class="lang-english" style="display:none;color:#ff8c00;"><i class="fas fa-clock"></i> ${puja.duration_en || puja.duration || ''}</span>
+                        <span class="lang-hindi" style="color:#fff200;"><i class="fas fa-star"></i> लाभ: ${puja.benefits || ''}</span>
+                        <span class="lang-english" style="display:none;color:#fff200;"><i class="fas fa-star"></i> Benefits: ${puja.benefits_en || puja.benefits || ''}</span>
                     </div>
                     <button onclick="bookPuja(${index})" style="width:100%;background:linear-gradient(90deg,#ff8c00 0%,#fff200 100%);color:#2d0036;border:none;border-radius:8px;padding:12px;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                        <i class="fas fa-calendar-check"></i> पूजा बुक करें
+                        <span class="lang-hindi"><i class="fas fa-calendar-check"></i> पूजा बुक करें</span>
+                        <span class="lang-english" style="display:none;"><i class="fas fa-calendar-check"></i> Book Puja</span>
                     </button>
                 </div>
             `;
         });
         html += '</div>';
         container.innerHTML = html;
+        console.log('Puja list rendered successfully');
     }
     
     let selectedPuja = null;
@@ -673,12 +909,34 @@
         // Close payment modal
         document.getElementById('paymentModal').style.display = 'none';
     }
-    document.addEventListener('DOMContentLoaded', function() {
+    // Function to reset puja list with English fields
+    function resetPujaListWithEnglish() {
+        localStorage.removeItem('mahakal_puja_list');
         setDefaultPujasIfNone();
-        // updatePujaListWithNewPujas(); // Removed to prevent deleted pujas from reappearing
+        console.log('Puja list reset with English fields');
+        
+        // Test: Check if pujas have English fields
+        var pujas = getPujaList();
+        console.log('Current pujas:', pujas);
+        if(pujas.length > 0) {
+            console.log('First puja English fields:', {
+                name_en: pujas[0].name_en,
+                desc_en: pujas[0].desc_en,
+                duration_en: pujas[0].duration_en,
+                benefits_en: pujas[0].benefits_en
+            });
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Force update puja list with English fields
+        localStorage.removeItem('mahakal_puja_list');
+        setDefaultPujasIfNone();
+        console.log('Puja list updated with English fields on page load');
         var navBtn = document.getElementById('pujaBookingNavBtn');
+        var navBtnEn = document.getElementById('pujaBookingNavBtnEn');
         var pujaSection = document.getElementById('puja-list');
-        if(navBtn && pujaSection) {
+        if(navBtn && navBtnEn && pujaSection) {
             navBtn.addEventListener('click', function() {
                 if(pujaSection.style.display === 'none' || pujaSection.style.display === '') {
                     renderPujaList();
@@ -688,7 +946,18 @@
                     pujaSection.style.display = 'none';
                 }
             });
+            navBtnEn.addEventListener('click', function() {
+                if(pujaSection.style.display === 'none' || pujaSection.style.display === '') {
+                    renderPujaList();
+                    pujaSection.style.display = 'block';
+                    pujaSection.scrollIntoView({behavior:'smooth', block:'start'});
+                } else {
+                    pujaSection.style.display = 'none';
+                }
+            });
         }
+        
+
     });
     </script>
     <!-- Footer Section -->
